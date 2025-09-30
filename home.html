@@ -830,7 +830,8 @@
             // --- DATA PERSISTENCE SETUP (localStorage) ---
             let projects = JSON.parse(localStorage.getItem('covenProjects')) || [
                  // Add default project if the list is empty
-                { title: 'Universal Comparison', link: 'https://universal-comparison.onrender.com/', description: 'Our first hackathon project. A tool for comparing anything from tech specs to movie ratings.', tech: 'HTML, CSS, JavaScript, API' }
+                 { title: 'Universal Comparison', link: 'https://universal-comparison.onrender.com/', description: 'Our first hackathon project. A tool for comparing anything from tech specs to movie ratings.', tech: 'HTML, CSS, JavaScript, API' },
+                 { title: 'Arcade-Points-Calculator', link: 'https://shcode.dev', description: '• Developed a Python/Django management command to automate the synchronization of leaderboard data from CSV files into a PostgreSQL database, eliminating manual entry and ensuring data consistency.', tech: 'Python, Django, PostgreSQL' }
             ];
 
             const projectsDisplay = document.getElementById('projectsDisplay');
