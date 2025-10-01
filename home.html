@@ -1,1030 +1,2162 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BCA Coven</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        html {
-            scroll-behavior: smooth;
-        }
-        body {            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #0a0a0a;
+        color: #e5e7eb;
+        overflow-x: hidden; /* Prevent horizontal scrollbar */
+        /* Lightweight background for performance */
+        background-image: radial-gradient(
+            circle at top right,
+            rgba(139, 0, 0, 0.2),
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at bottom left,
+            rgba(212, 175, 55, 0.15),
+            transparent 60%
+          );
+        background-attachment: fixed;
+      }
 
-            font-family: 'Inter', sans-serif;
-            background-color: #0a0a0a;
-            color: #e5e7eb;
-            overflow-x: hidden; /* Prevent horizontal scrollbar */
-            /* Lightweight background for performance */
-            background-image: radial-gradient(circle at top right, rgba(139, 0, 0, 0.2), transparent 50%),
-                              radial-gradient(circle at bottom left, rgba(212, 175, 55, 0.15), transparent 60%);
-            background-attachment: fixed;
-        }
+      .font-cinzel {
+        font-family: "Cinzel", serif;
+      }
 
-        .font-cinzel {
-            font-family: 'Cinzel', serif;
-        }
+      .title-glow {
+        animation: glow 4s ease-in-out infinite;
+        text-shadow: 0 0 5px #ffd700, 0 0 10px #ffd700, 0 0 20px #c00,
+          0 0 35px #c00;
+      }
 
-        .title-glow {
-            animation: glow 4s ease-in-out infinite;
-            text-shadow: 0 0 5px #ffd700, 0 0 10px #ffd700, 0 0 20px #c00, 0 0 35px #c00;
+      @keyframes glow {
+        0%,
+        100% {
+          text-shadow: 0 0 5px #ffd700, 0 0 10px #ffd700, 0 0 20px #c00,
+            0 0 35px #c00;
         }
+        50% {
+          text-shadow: 0 0 10px #ffd700, 0 0 25px #ff6b6b, 0 0 45px #c00;
+        }
+      }
 
-        @keyframes glow {
-            0%, 100% {
-                text-shadow: 0 0 5px #ffd700, 0 0 10px #ffd700, 0 0 20px #c00, 0 0 35px #c00;
-            }
-            50% {
-                text-shadow: 0 0 10px #ffd700, 0 0 25px #ff6b6b, 0 0 45px #c00;
-            }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(40px) scale(0.97);
         }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px) scale(0.97);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
+      .fade-in-up {
+        opacity: 0;
+        animation: fadeInUp 0.7s ease-out forwards;
+      }
 
-        .fade-in-up {
-             opacity: 0;
-             animation: fadeInUp 0.7s ease-out forwards;
-        }
+      /* 3D hover effect for cards */
+      .card-3d {
+        transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1),
+          box-shadow 0.4s ease;
+        transform-style: preserve-3d;
+      }
+      .card-3d:hover {
+        transform: perspective(1000px) rotateY(5deg) rotateX(2deg) scale(1.03);
+        box-shadow: 0px 15px 30px rgba(212, 175, 55, 0.2);
+      }
 
-        /* 3D hover effect for cards */
-        .card-3d {
-            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease;
-            transform-style: preserve-3d;
-        }
-        .card-3d:hover {
-            transform: perspective(1000px) rotateY(5deg) rotateX(2deg) scale(1.03);
-            box-shadow: 0px 15px
-            30px rgba(212, 175, 55, 0.2);
-        }
+      /* Mentor Card Flip Animation */
+      .flip-card {
+        perspective: 1000px;
+        min-height: 250px; /* Ensure container has height for the flip effect */
+      }
+      .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+      }
+      .flip-card:hover .flip-card-inner {
+        transform: rotateY(180deg);
+      }
+      .flip-card-front,
+      .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden; /* Safari */
+        backface-visibility: hidden;
+        border-radius: 0.75rem; /* rounded-xl */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1.5rem; /* p-6 */
+      }
+      .flip-card-front {
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(212, 175, 55, 0.2);
+      }
+      .flip-card-back {
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        transform: rotateY(180deg);
+      }
 
-        /* Mentor Card Flip Animation */
-        .flip-card {
-            perspective: 1000px;
-            min-height: 250px; /* Ensure container has height for the flip effect */
-        }
-        .flip-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.8s;
-            transform-style: preserve-3d;
-        }
-        .flip-card:hover .flip-card-inner {
-            transform: rotateY(180deg);
-        }
-        .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden; /* Safari */
-            backface-visibility: hidden;
-            border-radius: 0.75rem; /* rounded-xl */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 1.5rem; /* p-6 */
-        }
-        .flip-card-front {
-            background-color: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-        }
-        .flip-card-back {
-            background-color: rgba(0,0,0,0.5);
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            transform: rotateY(180deg);
-        }
+      .roadmap-card:nth-child(1) {
+        animation-delay: 0.2s;
+      }
+      .roadmap-card:nth-child(2) {
+        animation-delay: 0.4s;
+      }
+      .roadmap-card:nth-child(3) {
+        animation-delay: 0.6s;
+      }
 
+      .roadmap-connector {
+        position: absolute;
+        top: 50%;
+        left: -20px;
+        transform: translateY(-50%);
+        width: 40px;
+        height: 2px;
+        background-image: linear-gradient(
+          to right,
+          #d4af37 60%,
+          transparent 40%
+        );
+        background-size: 10px 2px;
+      }
 
-        .roadmap-card:nth-child(1) { animation-delay: 0.2s; }
-        .roadmap-card:nth-child(2) { animation-delay: 0.4s; }
-        .roadmap-card:nth-child(3) { animation-delay: 0.6s; }
-        
+      @media (max-width: 768px) {
         .roadmap-connector {
-            position: absolute; top: 50%; left: -20px; transform: translateY(-50%);
-            width: 40px; height: 2px;
-            background-image: linear-gradient(to right, #D4AF37 60%, transparent 40%);
-            background-size: 10px 2px;
+          top: -20px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 2px;
+          height: 40px;
+          background-image: linear-gradient(
+            to bottom,
+            #d4af37 60%,
+            transparent 40%
+          );
+          background-size: 2px 10px;
         }
-        
-        @media (max-width: 768px) {
-             .roadmap-connector {
-                top: -20px; left: 50%; transform: translateX(-50%);
-                width: 2px; height: 40px;
-                background-image: linear-gradient(to bottom, #D4AF37 60%, transparent 40%);
-                background-size: 2px 10px;
-            }
-        }
+      }
 
-        @keyframes new-item-animation {
-            from {
-                opacity: 0;
-                transform: translateX(50px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0) scale(1);
-            }
+      @keyframes new-item-animation {
+        from {
+          opacity: 0;
+          transform: translateX(50px) scale(0.95);
         }
-        .new-project {
-            animation: new-item-animation 0.5s ease-out forwards;
+        to {
+          opacity: 1;
+          transform: translateX(0) scale(1);
         }
+      }
+      .new-project {
+        animation: new-item-animation 0.5s ease-out forwards;
+      }
 
-        @keyframes shake-error {
-          0%, 100% { transform: translateX(0); }
-          10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-          20%, 40%, 60%, 80% { transform: translateX(5px); }
+      @keyframes shake-error {
+        0%,
+        100% {
+          transform: translateX(0);
         }
-        .input-error {
-          animation: shake-error 0.5s ease-in-out;
-          border-color: #ef4444 !important; /* red-500 */
+        10%,
+        30%,
+        50%,
+        70%,
+        90% {
+          transform: translateX(-5px);
         }
-        
-        /* Generic Dropdown/Collapsible animation styles */
-        .collapsible-item .collapsible-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        20%,
+        40%,
+        60%,
+        80% {
+          transform: translateX(5px);
         }
-        .collapsible-item.is-open .collapsible-content {
-            max-height: 600px; /* Adjust as needed */
-            margin-top: 1rem; /* Add space when open */
-        }
-        .collapsible-item .collapsible-arrow {
-            transition: transform 0.3s ease-in-out;
-        }
-        .collapsible-item.is-open .collapsible-arrow {
-            transform: rotate(180deg);
-        }
+      }
+      .input-error {
+        animation: shake-error 0.5s ease-in-out;
+        border-color: #ef4444 !important; /* red-500 */
+      }
 
-        @keyframes fadeOut {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(-20px); }
+      /* Generic Dropdown/Collapsible animation styles */
+      .collapsible-item .collapsible-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+          margin-top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .collapsible-item.is-open .collapsible-content {
+        max-height: 600px; /* Adjust as needed */
+        margin-top: 1rem; /* Add space when open */
+      }
+      .collapsible-item .collapsible-arrow {
+        transition: transform 0.3s ease-in-out;
+      }
+      .collapsible-item.is-open .collapsible-arrow {
+        transform: rotate(180deg);
+      }
+
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+          transform: translateY(0);
         }
-
-        .success-message {
-            animation: fadeInUp 0.5s ease-out forwards, fadeOut 0.5s ease-in forwards 3.5s;
+        to {
+          opacity: 0;
+          transform: translateY(-20px);
         }
+      }
 
+      .success-message {
+        animation: fadeInUp 0.5s ease-out forwards,
+          fadeOut 0.5s ease-in forwards 3.5s;
+      }
 
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #1f1f1f; }
-        ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #ffd700; }
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #1f1f1f;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #d4af37;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #ffd700;
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <!-- Navigation Header -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-md shadow-lg shadow-amber-500/10">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-            <div class="flex items-center justify-between h-16">
-                <div class="flex-shrink-0">
-                    <a href="#" class="text-white font-cinzel text-xl font-bold">BCA Coven</a>
-                </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#next-steps" class="text-gray-300 hover:text-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Next Steps</a>
-                        <a href="#mentors" class="text-gray-300 hover:text-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Mentors</a>
-                        <a href="#showcase" class="text-gray-300 hover:text-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Showcase</a>
-                        <a href="#registration" class="text-gray-300 hover:text-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Register</a>
-                        <a href="#faq" class="text-gray-300 hover:text-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">FAQ</a>
-                        <a href="#skills" class="text-gray-300 hover:text-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Skills</a>
-                        <a href="#contact" class="text-gray-300 hover:text-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors">Contact</a>
-                    </div>
-                </div>
-                <!-- Mobile menu button -->
-                <div class="-mr-2 flex md:hidden">
-                    <button id="mobile-menu-button" type="button" class="bg-gray-800/50 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" aria-controls="mobile-menu" aria-expanded="false" aria-label="Toggle navigation menu">
-                        <span class="sr-only">Open main menu</span>
-                        <svg id="menu-open-icon" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                        <svg id="menu-close-icon" class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
+    <nav
+      class="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-md shadow-lg shadow-amber-500/10"
+    >
+      <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex-shrink-0">
+            <a href="#" class="text-white font-cinzel text-xl font-bold"
+              >BCA Coven</a
+            >
+          </div>
+          <div class="hidden md:block">
+            <div class="ml-10 flex items-baseline space-x-4">
+              <a
+                href="#next-steps"
+                class="text-gray-300 hover:text-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                >Next Steps</a
+              >
+              <a
+                href="#mentors"
+                class="text-gray-300 hover:text-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                >Mentors</a
+              >
+              <a
+                href="#showcase"
+                class="text-gray-300 hover:text-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                >Showcase</a
+              >
+              <a
+                href="#registration"
+                class="text-gray-300 hover:text-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                >Register</a
+              >
+              <a
+                href="#faq"
+                class="text-gray-300 hover:text-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                >FAQ</a
+              >
+              <a
+                href="#skills"
+                class="text-gray-300 hover:text-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                >Skills</a
+              >
+              <a
+                href="#contact"
+                class="text-gray-300 hover:text-amber-400 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                >Contact</a
+              >
             </div>
+          </div>
+          <!-- Mobile menu button -->
+          <div class="-mr-2 flex md:hidden">
+            <button
+              id="mobile-menu-button"
+              type="button"
+              class="bg-gray-800/50 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+              aria-controls="mobile-menu"
+              aria-expanded="false"
+              aria-label="Toggle navigation menu"
+            >
+              <span class="sr-only">Open main menu</span>
+              <svg
+                id="menu-open-icon"
+                class="block h-6 w-6"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+              <svg
+                id="menu-close-icon"
+                class="hidden h-6 w-6"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
+      </div>
 
-        <!-- Mobile menu, show/hide based on menu state. -->
-        <div class="md:hidden hidden" id="mobile-menu">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="#next-steps" class="text-gray-300 hover:bg-gray-700/50 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Next Steps</a>
-                <a href="#mentors" class="text-gray-300 hover:bg-gray-700/50 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Mentors</a>
-                <a href="#showcase" class="text-gray-300 hover:bg-gray-700/50 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Showcase</a>
-                <a href="#registration" class="text-gray-300 hover:bg-gray-700/50 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Register</a>
-                <a href="#faq" class="text-gray-300 hover:bg-gray-700/50 hover:text-white block px-3 py-2 rounded-md text-base font-medium">FAQ</a>
-                <a href="#skills" class="text-gray-300 hover:bg-gray-700/50 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Skills</a>
-                <a href="#contact" class="text-gray-300 hover:bg-gray-700/50 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Contact</a>
-            </div>
+      <!-- Mobile menu, show/hide based on menu state. -->
+      <div class="md:hidden hidden" id="mobile-menu">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <a
+            href="#next-steps"
+            class="text-gray-300 hover:bg-gray-700/50 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Next Steps</a
+          >
+          <a
+            href="#mentors"
+            class="text-gray-300 hover:bg-gray-700/50 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Mentors</a
+          >
+          <a
+            href="#showcase"
+            class="text-gray-300 hover:bg-gray-700/50 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Showcase</a
+          >
+          <a
+            href="#registration"
+            class="text-gray-300 hover:bg-gray-700/50 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Register</a
+          >
+          <a
+            href="#faq"
+            class="text-gray-300 hover:bg-gray-700/50 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >FAQ</a
+          >
+          <a
+            href="#skills"
+            class="text-gray-300 hover:bg-gray-700/50 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Skills</a
+          >
+          <a
+            href="#contact"
+            class="text-gray-300 hover:bg-gray-700/50 hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+            >Contact</a
+          >
         </div>
+      </div>
     </nav>
 
     <div class="relative z-10 container mx-auto p-4 md:p-8 max-w-6xl pt-24">
-        <!-- Header Section -->
-        <header id="header" class="text-center mb-16 min-h-[40vh] flex flex-col justify-center items-center">
-            <h1 class="text-6xl md:text-7xl font-bold text-white font-cinzel title-glow">
-                BCA Coven
-            </h1>
-            <p class="text-gray-400 mt-6 max-w-2xl mx-auto text-lg">
-                A powerful and beginner-friendly team for you to learn with us, participate in hackathons, grab internships, and build real-world projects.
+      <!-- Header Section -->
+      <header
+        id="header"
+        class="text-center mb-16 min-h-[40vh] flex flex-col justify-center items-center"
+      >
+        <h1
+          class="text-6xl md:text-7xl font-bold text-white font-cinzel title-glow"
+        >
+          BCA Coven
+        </h1>
+        <p class="text-gray-400 mt-6 max-w-2xl mx-auto text-lg">
+          A powerful and beginner-friendly team for you to learn with us,
+          participate in hackathons, grab internships, and build real-world
+          projects.
+        </p>
+      </header>
+
+      <!-- Welcome & Next Steps Section -->
+      <section id="next-steps" class="fade-in-up mb-20">
+        <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">
+          Welcome, Aspirant!
+        </h2>
+        <div
+          class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-amber-500/20"
+        >
+          <p class="text-center text-lg text-gray-300 mb-6">
+            We will be very nice to meet with all of you as partners of our
+            team.
+          </p>
+          <h3
+            class="text-2xl font-bold text-center mb-4 text-amber-400 font-cinzel"
+          >
+            What you have to do next
+          </h3>
+          <ul class="space-y-4 text-gray-300 text-lg mb-8">
+            <li class="flex items-start">
+              <span class="text-amber-400 mr-4 mt-1">&#10140;</span
+              ><span
+                >Click the links in the
+                <a href="#skills" class="font-bold hover:underline"
+                  >Skills section</a
+                >
+                below and try to understand the topics. Doubts are
+                welcome!</span
+              >
+            </li>
+            <li class="flex items-start">
+              <span class="text-amber-400 mr-4 mt-1">&#10140;</span
+              ><span>Select a skill that interests you the most.</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-amber-400 mr-4 mt-1">&#10140;</span
+              ><span
+                >Explore and complete your
+                <a href="#registration" class="font-bold hover:underline"
+                  >registration</a
+                >
+                by Wednesday night.</span
+              >
+            </li>
+            <li class="flex items-start">
+              <span class="text-amber-400 mr-4 mt-1">&#10140;</span
+              ><span
+                >We will conduct a Google Meeting to discuss further
+                steps.</span
+              >
+            </li>
+          </ul>
+          <div class="bg-gray-900/50 border border-red-500/30 rounded-lg p-4">
+            <h4 class="font-bold text-red-400 text-lg mb-2">
+              Important Notes:
+            </h4>
+            <ul class="space-y-2 text-gray-400">
+              <li class="flex items-center">
+                <span class="text-red-400 mr-3">&#8226;</span>Joining the Google
+                Meeting is quite essential.
+              </li>
+              <li class="flex items-center">
+                <span class="text-red-400 mr-3">&#8226;</span>You must be able
+                to work at least 2 hours a day (outside of college studies).
+              </li>
+              <li class="flex items-center">
+                <span class="text-red-400 mr-3">&#8226;</span>You must have a
+                laptop.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Meet the Mentors Section -->
+      <section id="mentors" class="fade-in-up mb-20">
+        <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">
+          Meet the Mentors
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <!-- Mentor Card 1 -->
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <img
+                  class="w-24 h-24 rounded-lg mx-auto mb-4 border-2 border-amber-400"
+                  src="https://api.dicebear.com/8.x/bottts/svg?seed=Dhairya Agrawal"
+                  alt="Avatar of Dhairya Agrawal"
+                />
+                <h3 class="text-xl font-bold text-white text-center">
+                  Dhairya Agrawal
+                </h3>
+              </div>
+              <div class="flip-card-back">
+                <h3 class="text-xl font-bold text-white text-center">
+                  Specialty
+                </h3>
+                <p class="text-amber-400 font-semibold text-center mt-2">
+                  Frontend Specialist (MERN)
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Mentor Card 2 -->
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <img
+                  class="w-24 h-24 rounded-lg mx-auto mb-4 border-2 border-amber-400"
+                  src="https://api.dicebear.com/8.x/bottts/svg?seed=Prakhar Dxit"
+                  alt="Avatar of Prakhar Dxit"
+                />
+                <h3 class="text-xl font-bold text-white text-center">
+                  Prakhar Dxit
+                </h3>
+              </div>
+              <div class="flip-card-back">
+                <h3 class="text-xl font-bold text-white text-center">
+                  Specialty
+                </h3>
+                <p class="text-amber-400 font-semibold text-center mt-2">
+                  Backend Specialist (Python)
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Mentor Card 3 -->
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <img
+                  class="w-24 h-24 rounded-lg mx-auto mb-4 border-2 border-amber-400"
+                  src="https://api.dicebear.com/8.x/bottts/svg?seed=Bhoomi Pal"
+                  alt="Avatar of Bhoomi Pal"
+                />
+                <h3 class="text-xl font-bold text-white text-center">
+                  Bhoomi Pal
+                </h3>
+              </div>
+              <div class="flip-card-back">
+                <h3 class="text-xl font-bold text-white text-center">
+                  Specialty
+                </h3>
+                <p class="text-amber-400 font-semibold text-center mt-2">
+                  Girls Mentor (Python)
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Mentor Card 4 -->
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <img
+                  class="w-24 h-24 rounded-lg mx-auto mb-4 border-2 border-amber-400"
+                  src="https://api.dicebear.com/8.x/bottts/svg?seed=Mohini Tiwari"
+                  alt="Avatar of Mohini Tiwari"
+                />
+                <h3 class="text-xl font-bold text-white text-center">
+                  Mohini Tiwari
+                </h3>
+              </div>
+              <div class="flip-card-back">
+                <h3 class="text-xl font-bold text-white text-center">
+                  Specialty
+                </h3>
+                <p class="text-amber-400 font-semibold text-center mt-2">
+                  Python (girls mentor)
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Mentor Card 5 -->
+          <div class="flip-card">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <img
+                  class="w-24 h-24 rounded-lg mx-auto mb-4 border-2 border-amber-400"
+                  src="https://api.dicebear.com/8.x/bottts/svg?seed=Uttam Rajput"
+                  alt="Avatar of Uttam Rajput"
+                />
+                <h3 class="text-xl font-bold text-white text-center">
+                  Uttam Rajput
+                </h3>
+              </div>
+              <div class="flip-card-back">
+                <h3 class="text-xl font-bold text-white text-center">
+                  Specialty
+                </h3>
+                <p class="text-amber-400 font-semibold text-center mt-2">
+                  Freelancing Experience
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Project Showcase Section -->
+      <section id="showcase" class="fade-in-up mb-20">
+        <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">
+          Project Showcase
+        </h2>
+        <div class="max-w-3xl mx-auto">
+          <div
+            class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-amber-500/20"
+          >
+            <h3
+              class="text-2xl font-bold text-center mb-6 text-white font-cinzel"
+            >
+              Hall of Fame
+            </h3>
+            <div class="space-y-6">
+              <!-- Project 1 -->
+              <div
+                class="bg-gray-900/70 p-4 rounded-lg border-l-4 border-purple-500"
+              >
+                <div class="flex justify-between items-start">
+                  <h4 class="text-lg font-semibold text-white">
+                    Contributor's Showcase
+                  </h4>
+                  <a
+                    href="https://shcode.dev/contributors"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-sm text-amber-400 hover:text-amber-300 whitespace-nowrap ml-4"
+                  >
+                    View Live &rarr;
+                  </a>
+                </div>
+                <p class="text-gray-400 text-sm mt-1 mb-3">
+                  A platform to highlight and appreciate open-source
+                  contributors from our community.
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  <span
+                    class="text-xs font-medium text-cyan-200 bg-cyan-900/50 px-2.5 py-1 rounded-full"
+                    >React</span
+                  >
+                  <span
+                    class="text-xs font-medium text-cyan-200 bg-cyan-900/50 px-2.5 py-1 rounded-full"
+                    >Node.js</span
+                  >
+                  <span
+                    class="text-xs font-medium text-cyan-200 bg-cyan-900/50 px-2.5 py-1 rounded-full"
+                    >GitHub API</span
+                  >
+                </div>
+              </div>
+              <!-- Project 2 -->
+              <div
+                class="bg-gray-900/70 p-4 rounded-lg border-l-4 border-purple-500"
+              >
+                <div class="flex justify-between items-start">
+                  <h4 class="text-lg font-semibold text-white">
+                    Universal Comparison
+                  </h4>
+                  <a
+                    href="https://universal-comparison.onrender.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-sm text-amber-400 hover:text-amber-300 whitespace-nowrap ml-4"
+                  >
+                    View Live &rarr;
+                  </a>
+                </div>
+                <p class="text-gray-400 text-sm mt-1 mb-3">
+                  Our first hackathon project. A tool for comparing anything
+                  from tech specs to movie ratings.
+                </p>
+                <div class="flex flex-wrap gap-2">
+                  <span
+                    class="text-xs font-medium text-cyan-200 bg-cyan-900/50 px-2.5 py-1 rounded-full"
+                    >HTML</span
+                  >
+                  <span
+                    class="text-xs font-medium text-cyan-200 bg-cyan-900/50 px-2.5 py-1 rounded-full"
+                    >CSS</span
+                  >
+                  <span
+                    class="text-xs font-medium text-cyan-200 bg-cyan-900/50 px-2.5 py-1 rounded-full"
+                    >JavaScript</span
+                  >
+                  <span
+                    class="text-xs font-medium text-cyan-200 bg-cyan-900/50 px-2.5 py-1 rounded-full"
+                    >API</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Personal Suggestion -->
+      <section class="fade-in-up mb-20">
+        <div
+          class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-amber-500/20 text-center"
+        >
+          <h3 class="text-2xl font-bold mb-4 text-white font-cinzel">
+            A Personal Suggestion
+          </h3>
+          <p class="text-gray-400 max-w-3xl mx-auto text-lg italic">
+            "Take out time from today... try to explore things. B'coz what you
+            choose should lie with your interest... if not, then this journey
+            becomes quite gloomious for you. So choose wisely... 🤞"
+          </p>
+        </div>
+      </section>
+
+      <!-- Animated Roadmap Section -->
+      <section id="journey" class="mb-20">
+        <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">
+          Your Journey With Us
+        </h2>
+        <div class="grid md:grid-cols-3 gap-8 md:gap-5 relative">
+          <!-- Roadmap Card 1 -->
+          <div
+            class="roadmap-card card-3d fade-in-up bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20"
+          >
+            <div class="flex items-center mb-4">
+              <div
+                class="bg-gradient-to-br from-amber-500 to-red-700 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl mr-4 shadow-md shadow-amber-500/20"
+              >
+                1
+              </div>
+              <h3 class="text-xl font-bold text-white">How to Start</h3>
+            </div>
+            <ul class="space-y-3 text-gray-300 pl-2">
+              <li>
+                <span class="font-semibold text-amber-400">Step 1:</span> Do
+                registration below.
+              </li>
+              <li>
+                <span class="font-semibold text-amber-400">Step 2:</span> Select
+                a primary skill.
+              </li>
+              <li>
+                <span class="font-semibold text-amber-400">Step 3:</span> Find
+                sources and start learning.
+              </li>
+            </ul>
+          </div>
+          <!-- Roadmap Card 2 -->
+          <div
+            class="roadmap-card card-3d fade-in-up bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20 relative"
+          >
+            <div class="roadmap-connector"></div>
+            <div class="flex items-center mb-4">
+              <div
+                class="bg-gradient-to-br from-amber-500 to-red-700 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl mr-4 shadow-md shadow-amber-500/20"
+              >
+                2
+              </div>
+              <h3 class="text-xl font-bold text-white">Termination Round</h3>
+            </div>
+            <p class="text-gray-300 mb-3">
+              <span class="font-semibold text-red-500">Warning:</span> Members
+              who are not serious or not working properly will be disqualified.
             </p>
-        </header>
-        
-        <!-- Welcome & Next Steps Section -->
-        <section id="next-steps" class="fade-in-up mb-20">
-            <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">Welcome, Aspirant!</h2>
-            <div class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-amber-500/20">
-                <p class="text-center text-lg text-gray-300 mb-6">We will be very nice to meet with all of you as partners of our team.</p>
-                <h3 class="text-2xl font-bold text-center mb-4 text-amber-400 font-cinzel">What you have to do next</h3>
-                 <ul class="space-y-4 text-gray-300 text-lg mb-8">
-                    <li class="flex items-start"><span class="text-amber-400 mr-4 mt-1">&#10140;</span><span>Click the links in the <a href="#skills" class="font-bold hover:underline">Skills section</a> below and try to understand the topics. Doubts are welcome!</span></li>
-                    <li class="flex items-start"><span class="text-amber-400 mr-4 mt-1">&#10140;</span><span>Select a skill that interests you the most.</span></li>
-                    <li class="flex items-start"><span class="text-amber-400 mr-4 mt-1">&#10140;</span><span>Explore and complete your <a href="#registration" class="font-bold hover:underline">registration</a> by Wednesday night.</span></li>
-                    <li class="flex items-start"><span class="text-amber-400 mr-4 mt-1">&#10140;</span><span>We will conduct a Google Meeting to discuss further steps.</span></li>
-                </ul>
-                <div class="bg-gray-900/50 border border-red-500/30 rounded-lg p-4">
-                    <h4 class="font-bold text-red-400 text-lg mb-2">Important Notes:</h4>
-                     <ul class="space-y-2 text-gray-400">
-                        <li class="flex items-center"><span class="text-red-400 mr-3">&#8226;</span>Joining the Google Meeting is quite essential.</li>
-                        <li class="flex items-center"><span class="text-red-400 mr-3">&#8226;</span>You must be able to work at least 2 hours a day (outside of college studies).</li>
-                        <li class="flex items-center"><span class="text-red-400 mr-3">&#8226;</span>You must have a laptop.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Meet the Mentors Section -->
-        <section id="mentors" class="fade-in-up mb-20">
-            <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">Meet the Mentors</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Mentor Card 1 -->
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <img class="w-24 h-24 rounded-lg mx-auto mb-4 border-2 border-amber-400" src="https://api.dicebear.com/8.x/bottts/svg?seed=Dhairya Agrawal" alt="Avatar of Dhairya Agrawal">
-                            <h3 class="text-xl font-bold text-white text-center">Dhairya Agrawal</h3>
-                        </div>
-                        <div class="flip-card-back">
-                            <h3 class="text-xl font-bold text-white text-center">Specialty</h3>
-                            <p class="text-amber-400 font-semibold text-center mt-2">Frontend Specialist (MERN)</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Mentor Card 2 -->
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <img class="w-24 h-24 rounded-lg mx-auto mb-4 border-2 border-amber-400" src="https://api.dicebear.com/8.x/bottts/svg?seed=Prakhar Dxit" alt="Avatar of Prakhar Dxit">
-                            <h3 class="text-xl font-bold text-white text-center">Prakhar Dxit</h3>
-                        </div>
-                        <div class="flip-card-back">
-                            <h3 class="text-xl font-bold text-white text-center">Specialty</h3>
-                            <p class="text-amber-400 font-semibold text-center mt-2">Backend Specialist (Python)</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Mentor Card 3 -->
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <img class="w-24 h-24 rounded-lg mx-auto mb-4 border-2 border-amber-400" src="https://api.dicebear.com/8.x/bottts/svg?seed=Bhoomi Pal" alt="Avatar of Bhoomi Pal">
-                            <h3 class="text-xl font-bold text-white text-center">Bhoomi Pal</h3>
-                        </div>
-                        <div class="flip-card-back">
-                            <h3 class="text-xl font-bold text-white text-center">Specialty</h3>
-                            <p class="text-amber-400 font-semibold text-center mt-2">Girls Mentor (Python)</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Mentor Card 4 -->
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <img class="w-24 h-24 rounded-lg mx-auto mb-4 border-2 border-amber-400" src="https://api.dicebear.com/8.x/bottts/svg?seed=Uttam Rajput" alt="Avatar of Uttam Rajput">
-                            <h3 class="text-xl font-bold text-white text-center">Uttam Rajput</h3>
-                        </div>
-                        <div class="flip-card-back">
-                            <h3 class="text-xl font-bold text-white text-center">Specialty</h3>
-                            <p class="text-amber-400 font-semibold text-center mt-2">Freelancing Experience</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Project Showcase Section -->
-        <section id="showcase" class="fade-in-up mb-20">
-            <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">Project Showcase</h2>
-            <div class="grid lg:grid-cols-2 gap-8">
-                <!-- Display Projects -->
-                 <div class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-amber-500/20">
-                    <h3 class="text-2xl font-bold text-center mb-6 text-white font-cinzel">Hall of Fame</h3>
-                    <div id="projectsDisplay" class="space-y-6 h-96 overflow-y-auto pr-2">
-                        <!-- Projects will be dynamically loaded here -->
-                        <div id="noProjectsMessage" class="text-center text-gray-500 pt-16">
-                            <p>No projects have been added yet.</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Add Project Form -->
-                <div class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-amber-500/20">
-                    <h3 class="text-2xl font-bold text-center mb-6 text-white font-cinzel">Add Your Project</h3>
-                    <form id="addProjectForm" novalidate>
-                        <div class="mb-4">
-                            <label for="projectTitle" class="block text-sm font-medium text-gray-300 mb-2">Project Title</label>
-                            <input type="text" id="projectTitle" name="projectTitle" class="w-full px-4 py-2 bg-gray-900/80 border border-amber-500/30 rounded-lg text-white" required>
-                        </div>
-                         <div class="mb-4">
-                            <label for="projectLink" class="block text-sm font-medium text-gray-300 mb-2">Live URL</label>
-                            <input type="url" id="projectLink" name="projectLink" class="w-full px-4 py-2 bg-gray-900/80 border border-amber-500/30 rounded-lg text-white" placeholder="https://..." required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="projectDescription" class="block text-sm font-medium text-gray-300 mb-2">Short Description</label>
-                            <textarea id="projectDescription" name="projectDescription" rows="2" class="w-full px-4 py-2 bg-gray-900/80 border border-amber-500/30 rounded-lg text-white" required></textarea>
-                        </div>
-                        <div class="mb-6">
-                            <label for="projectTech" class="block text-sm font-medium text-gray-300 mb-2">Technologies Used</label>
-                            <input type="text" id="projectTech" name="projectTech" class="w-full px-4 py-2 bg-gray-900/80 border border-amber-500/30 rounded-lg text-white" placeholder="Comma, separated, list" required>
-                        </div>
-                        <button type="submit" class="w-full bg-gradient-to-r from-amber-600 to-red-800 text-white font-bold py-3 px-4 rounded-lg hover:from-amber-500 hover:to-red-700 transition-all duration-300 transform hover:scale-105">
-                            Submit Project
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </section>
-        
-        <!-- Personal Suggestion -->
-        <section class="fade-in-up mb-20">
-            <div class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-amber-500/20 text-center">
-                 <h3 class="text-2xl font-bold mb-4 text-white font-cinzel">A Personal Suggestion</h3>
-                 <p class="text-gray-400 max-w-3xl mx-auto text-lg italic">
-                     "Take out time from today... try to explore things. B'coz what you choose should lie with your interest... if not, then this journey becomes quite gloomious for you. So choose wisely... 🤞"
-                 </p>
-            </div>
-        </section>
-
-        <!-- Animated Roadmap Section -->
-        <section id="journey" class="mb-20">
-            <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">Your Journey With Us</h2>
-            <div class="grid md:grid-cols-3 gap-8 md:gap-5 relative">
-                <!-- Roadmap Card 1 -->
-                <div class="roadmap-card card-3d fade-in-up bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-gradient-to-br from-amber-500 to-red-700 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl mr-4 shadow-md shadow-amber-500/20">1</div>
-                        <h3 class="text-xl font-bold text-white">How to Start</h3>
-                    </div>
-                    <ul class="space-y-3 text-gray-300 pl-2">
-                        <li><span class="font-semibold text-amber-400">Step 1:</span> Do registration below.</li>
-                        <li><span class="font-semibold text-amber-400">Step 2:</span> Select a primary skill.</li>
-                        <li><span class="font-semibold text-amber-400">Step 3:</span> Find sources and start learning.</li>
-                    </ul>
-                </div>
-                <!-- Roadmap Card 2 -->
-                <div class="roadmap-card card-3d fade-in-up bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20 relative">
-                    <div class="roadmap-connector"></div>
-                    <div class="flex items-center mb-4">
-                        <div class="bg-gradient-to-br from-amber-500 to-red-700 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl mr-4 shadow-md shadow-amber-500/20">2</div>
-                        <h3 class="text-xl font-bold text-white">Termination Round</h3>
-                    </div>
-                    <p class="text-gray-300 mb-3"><span class="font-semibold text-red-500">Warning:</span> Members who are not serious or not working properly will be disqualified.</p>
-                    <p class="text-gray-300"><span class="font-semibold text-amber-400">Task:</span> Make a project by the end of this month (after Diwali).</p>
-                </div>
-                <!-- Roadmap Card 3 -->
-                <div class="roadmap-card card-3d fade-in-up bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20 relative">
-                     <div class="roadmap-connector"></div>
-                    <div class="flex items-center mb-4">
-                        <div class="bg-gradient-to-br from-amber-500 to-red-700 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl mr-4 shadow-md shadow-amber-500/20">3</div>
-                        <h3 class="text-xl font-bold text-white">Hackathon Prep</h3>
-                    </div>
-                    <p class="text-gray-300"><span class="font-semibold text-amber-400">Final Step:</span> Select a team and start working on the project for the hackathon.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- What You Have To Do Section -->
-        <section id="commitments" class="fade-in-up mb-20" style="animation-delay: 0.2s;">
-            <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">Your Daily Commitments</h2>
-            <div class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-amber-500/20">
-                 <ul class="space-y-4 text-gray-300 text-lg">
-                    <li class="flex items-start"><span class="text-amber-400 mr-4 mt-1">&#10140;</span><span><strong class="text-white">Learn Daily:</strong> Consistency is key. Dedicate time every day to improve your chosen skill.</span></li>
-                    <li class="flex items-start"><span class="text-amber-400 mr-4 mt-1">&#10140;</span><span><strong class="text-white">Post Daily:</strong> Share what you've learned on LinkedIn. This builds your public profile and reinforces knowledge. Don't forget to mention us!</span></li>
-                    <li class="flex items-start"><span class="text-amber-400 mr-4 mt-1">&#10140;</span><span><strong class="text-white">Clear Your Doubts:</strong> Never stay stuck. Ask questions within the team, collaborate with friends, and find solutions together.</span></li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Registration & Display Section -->
-        <section id="registration" class="mb-20">
-            <div class="max-w-2xl mx-auto">
-                <div class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-amber-500/20">
-                    <h2 class="text-2xl font-bold text-center mb-6 text-white font-cinzel">Join the Coven</h2>
-                    <form id="registrationForm" novalidate>
-                        <div class="mb-4">
-                            <label for="memberName" class="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
-                            <input type="text" id="memberName" name="memberName" class="w-full px-4 py-2 bg-gray-900/80 border border-amber-500/30 rounded-lg text-white focus:ring-amber-500 focus:border-amber-500 transition-all duration-300" placeholder="e.g., Ada Lovelace" required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="memberSkill" class="block text-sm font-medium text-gray-300 mb-2">Choose Your Skill</label>
-                            <select id="memberSkill" name="memberSkill" class="w-full px-4 py-2 bg-gray-900/80 border border-amber-500/30 rounded-lg text-white focus:ring-amber-500 focus:border-amber-500 transition duration-150">
-                                <option value="HTML/JS/CSS">HTML, JS with simple CSS</option>
-                                <option value="CSS Framework">A CSS Framework (Bootstrap/Tailwind)</option>
-                                <option value="REST API">REST API Concepts</option>
-                                <option value="Git & GitHub">Git & GitHub</option>
-                                <option value="Python">Python</option>
-                                <option value="Java">Java</option>
-                                <option value="UI/UX">UI/UX Design</option>
-                                <option value="Frontend Deployment">Frontend Deployment (Netlify/Vercel)</option>
-                                <option value="Backend Deployment">Backend Deployment (Heroku/Render)</option>
-                                <option value="Other">Other...</option>
-                            </select>
-                        </div>
-                        <div id="otherSkillWrapper" class="mb-6 hidden">
-                            <label for="otherSkill" class="block text-sm font-medium text-gray-300 mb-2">Please Specify Your Skill</label>
-                            <input type="text" id="otherSkill" name="otherSkill" class="w-full px-4 py-2 bg-gray-900/80 border border-amber-500/30 rounded-lg text-white focus:ring-amber-500 focus:border-amber-500 transition-all duration-300" placeholder="e.g., Blockchain Development">
-                        </div>
-                        <div>
-                            <button type="submit" class="w-full bg-gradient-to-r from-amber-500 to-red-700 text-white font-bold py-3 px-4 rounded-lg hover:from-amber-400 hover:to-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black/50 focus:ring-amber-500 transition-all duration-300 transform hover:scale-105">
-                                Register & Send
-                            </button>
-                        </div>
-                    </form>
-                    <div id="registrationSuccess" class="hidden mt-4 text-center p-3 bg-green-900/50 border border-green-500/50 text-green-300 rounded-lg">
-                        Congratulations! Your registration has been sent.
-                    </div>
-                </div>
-            </div>
-        </section>
-        
-        <!-- FAQ Section -->
-        <section id="faq" class="fade-in-up mb-20">
-            <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">Frequently Asked Questions</h2>
-            <div class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-amber-500/20 space-y-4">
-                <!-- FAQ Item -->
-                <div class="collapsible-item border-b border-amber-500/20 pb-2">
-                    <button class="collapsible-toggle w-full flex justify-between items-center text-left">
-                        <span class="text-lg font-semibold text-amber-400">Do I need prior coding experience?</span>
-                        <svg class="collapsible-arrow w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div class="collapsible-content pt-2 text-gray-400">
-                        <p>No, this program is designed for beginners. However, a strong desire to learn and a commitment to the daily tasks are essential.</p>
-                    </div>
-                </div>
-                 <!-- FAQ Item -->
-                <div class="collapsible-item border-b border-amber-500/20 pb-2">
-                    <button class="collapsible-toggle w-full flex justify-between items-center text-left">
-                        <span class="text-lg font-semibold text-amber-400">How are teams formed for the hackathon?</span>
-                        <svg class="collapsible-arrow w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div class="collapsible-content pt-2 text-gray-400">
-                        <p>Teams will be formed based on a combination of skill sets, project interests, and individual performance during the initial learning phase. We aim to create balanced and motivated teams.</p>
-                    </div>
-                </div>
-                 <!-- FAQ Item -->
-                <div class="collapsible-item border-b border-amber-500/20 pb-2">
-                    <button class="collapsible-toggle w-full flex justify-between items-center text-left">
-                        <span class="text-lg font-semibold text-amber-400">What if I can't dedicate 2 hours every single day?</span>
-                        <svg class="collapsible-arrow w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div class="collapsible-content pt-2 text-gray-400">
-                        <p>Consistency is more important than the exact duration. Aim for an average of 12-14 hours per week. We understand that exam periods or other commitments can be demanding, but clear communication with the team is key.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Us Section -->
-        <section id="contact" class="mb-20">
-             <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">Contact & Doubts</h2>
-             <div class="grid md:grid-cols-2 gap-8">
-                 <!-- Contact Form -->
-                 <div class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-amber-500/20">
-                     <h3 class="text-2xl font-bold text-center mb-6 text-white font-cinzel">Ask a Question</h3>
-                     <form id="contactForm" novalidate>
-                         <div class="mb-4">
-                             <label for="doubtTitle" class="block text-sm font-medium text-gray-300 mb-2">Title / Subject</label>
-                             <input type="text" id="doubtTitle" name="doubtTitle" maxlength="50" class="w-full px-4 py-2 bg-gray-900/80 border border-amber-500/30 rounded-lg text-white focus:ring-amber-500 focus:border-amber-500" placeholder="Max 50 characters" required>
-                         </div>
-                         <div class="mb-6">
-                             <label for="doubtDescription" class="block text-sm font-medium text-gray-300 mb-2">Describe Your Issue</label>
-                             <textarea id="doubtDescription" name="doubtDescription" rows="4" class="w-full px-4 py-2 bg-gray-900/80 border border-amber-500/30 rounded-lg text-white focus:ring-amber-500 focus:border-amber-500" placeholder="Be as detailed as possible..." required></textarea>
-                         </div>
-                         <button type="submit" class="w-full bg-gradient-to-r from-amber-500 to-red-700 text-white font-bold py-3 px-4 rounded-lg hover:from-amber-400 hover:to-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black/50 focus:ring-amber-500 transition-all duration-300 transform hover:scale-105">
-                             Send via Email
-                         </button>
-                         <p class="text-xs text-gray-500 mt-3 text-center">This will open your default email client.</p>
-                     </form>
-                 </div>
-                 <!-- Contact Info -->
-                 <div class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-amber-500/20 flex flex-col justify-center items-center text-center">
-                    <h3 class="text-2xl font-bold mb-6 text-white font-cinzel">Direct Channels</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <h4 class="text-lg font-semibold text-amber-400">Email</h4>
-                            <a href="mailto:B-C-A-Coven2025@outlook.com" class="text-gray-300 hover:text-white transition-colors">B-C-A-Coven2025@outlook.com</a>
-                        </div>
-                        <div>
-                            <h4 class="text-lg font-semibold text-amber-400">LinkedIn</h4>
-                            <a href="https://abc.linked.com" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-white transition-colors">abc.linked.com</a>
-                        </div>
-                    </div>
-                 </div>
-             </div>
-        </section>
-        
-        <!-- Our Goals Section -->
-        <section id="goals" class="fade-in-up mb-20" style="animation-delay: 0.4s;">
-            <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">Our Core Objectives</h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20 text-center">
-                    <h3 class="text-xl font-bold text-amber-400 mb-2">Dominate Hackathons</h3>
-                    <p class="text-gray-400">Collaborate on innovative projects, compete against the best, and showcase your skills on a competitive stage.</p>
-                </div>
-                <div class="card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20 text-center">
-                    <h3 class="text-xl font-bold text-amber-400 mb-2">Build Real Projects</h3>
-                    <p class="text-gray-400">Move beyond tutorials. Create impactful, real-world applications that solve actual problems and build your portfolio.</p>
-                </div>
-                <div class="card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20 text-center">
-                    <h3 class="text-xl font-bold text-amber-400 mb-2">Grab Internships</h3>
-                    <p class="text-gray-400">Gain the experience, projects, and network necessary to land valuable internships and kickstart your tech career.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Benefits Section -->
-        <section id="perks" class="fade-in-up mb-20" style="animation-delay: 0.6s;">
-            <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">Perks of the Coven</h2>
-            <div class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-amber-500/20">
-                <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-gray-300">
-                    <li class="flex items-start"><span class="text-amber-400 mr-3 mt-1">&#10003;</span><span>Build a professional GitHub & LinkedIn profile.</span></li>
-                    <li class="flex items-start"><span class="text-amber-400 mr-3 mt-1">&#10003;</span><span>Master teamwork and collaboration skills.</span></li>
-                    <li class="flex items-start"><span class="text-amber-400 mr-3 mt-1">&#10003;</span><span>Learn to handle the pressure of deadlines.</span></li>
-                    <li class="flex items-start"><span class="text-amber-400 mr-3 mt-1">&#10003;</span><span>Gain experience for GSoC and other programs.</span></li>
-                    <li class="flex items-start"><span class="text-amber-400 mr-3 mt-1">&#10003;</span><span>Create portfolio-worthy, real-world projects.</span></li>
-                    <li class="flex items-start"><span class="text-amber-400 mr-3 mt-1">&#10003;</span><span>Unlock freelancing opportunities to earn money.</span></li>
-                    <li class="flex items-start"><span class="text-amber-400 mr-3 mt-1">&#10003;</span><span>Receive guidance and help to find internships.</span></li>
-                </ul>
-            </div>
-        </section>
-
-        <!-- Rules Section -->
-        <section id="pact" class="fade-in-up mb-20" style="animation-delay: 0.8s;">
-            <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">Coven Pact</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <!-- Eligibility -->
-                <div class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-green-500/20">
-                    <h3 class="text-2xl font-bold text-center mb-6 text-green-400 font-cinzel">Eligibility</h3>
-                    <ul class="space-y-3 text-gray-300">
-                        <li class="flex items-center"><span class="text-green-400 text-2xl mr-3">&#10003;</span>Have a functional laptop.</li>
-                        <li class="flex items-center"><span class="text-green-400 text-2xl mr-3">&#10003;</span>Dedicate at least 2 hours daily.</li>
-                        <li class="flex items-center"><span class="text-green-400 text-2xl mr-3">&#10003;</span>Possess a strong team spirit.</li>
-                        <li class="flex items-center"><span class="text-green-400 text-2xl mr-3">&#10003;</span>Be punctual and respect deadlines.</li>
-                    </ul>
-                </div>
-                <!-- What to Avoid -->
-                <div class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-red-500/20">
-                    <h3 class="text-2xl font-bold text-center mb-6 text-red-400 font-cinzel">What to Avoid</h3>
-                     <ul class="space-y-3 text-gray-300">
-                        <li class="flex items-center"><span class="text-red-400 text-2xl mr-3">&#10007;</span>Disclosing team ideas externally.</li>
-                        <li class="flex items-center"><span class="text-red-400 text-2xl mr-3">&#10007;</span>Wasting time by over-exploring topics.</li>
-                        <li class="flex items-center"><span class="text-red-400 text-2xl mr-3">&#10007;</span>Multitasking at the cost of quality.</li>
-                        <li class="flex items-center"><span class="text-red-400 text-2xl mr-3">&#10007;</span>Creating disturbances or misleading others.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- Final Message Section -->
-        <section class="fade-in-up text-center mb-20" style="animation-delay: 1s;">
-            <h2 class="text-4xl font-bold text-center mb-8 text-white font-cinzel">A Message to Our New Members</h2>
-            <p class="text-gray-400 max-w-3xl mx-auto text-lg">
-                Welcome to the Coven! By registering, you've taken the first step on a challenging yet incredibly rewarding journey. We are thrilled to have you with us. Remember that your growth is our collective success. Stay curious, stay dedicated, and let's build amazing things together.
+            <p class="text-gray-300">
+              <span class="font-semibold text-amber-400">Task:</span> Make a
+              project by the end of this month (after Diwali).
             </p>
-        </section>
-        
-        <!-- Coven Lexicon Section -->
-        <section id="lexicon" class="fade-in-up mb-20" style="animation-delay: 1.2s;">
-            <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">Coven Lexicon</h2>
-            <div class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-amber-500/20 space-y-4">
-                <!-- Lexicon Item -->
-                <div class="collapsible-item border-b border-amber-500/20 pb-2">
-                    <button class="collapsible-toggle w-full flex justify-between items-center text-left">
-                        <span class="text-lg font-semibold text-amber-400">What is a Hackathon?</span>
-                        <svg class="collapsible-arrow w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div class="collapsible-content pt-2 text-gray-400">
-                        <p>An invention marathon where developers, designers, and others collaborate intensively on software projects over a short period (usually 24-48 hours). It's a place to learn, build, and network.</p>
-                    </div>
-                </div>
-                 <!-- Lexicon Item -->
-                <div class="collapsible-item border-b border-amber-500/20 pb-2">
-                    <button class="collapsible-toggle w-full flex justify-between items-center text-left">
-                        <span class="text-lg font-semibold text-amber-400">What is GSoC?</span>
-                        <svg class="collapsible-arrow w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div class="collapsible-content pt-2 text-gray-400">
-                        <p>Google Summer of Code is a global program focused on bringing more student developers into open source software development. Students work on a 10-week programming project with an open-source organization during their summer break.</p>
-                    </div>
-                </div>
-                 <!-- Lexicon Item -->
-                <div class="collapsible-item border-b border-amber-500/20 pb-2">
-                    <button class="collapsible-toggle w-full flex justify-between items-center text-left">
-                        <span class="text-lg font-semibold text-amber-400">What is Version Control?</span>
-                        <svg class="collapsible-arrow w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div class="collapsible-content pt-2 text-gray-400">
-                        <p>A system that records changes to a file or set of files over time so that you can recall specific versions later. For software projects, it allows multiple developers to work together without overwriting each other's work. Git is the most popular version control system.</p>
-                    </div>
-                </div>
+          </div>
+          <!-- Roadmap Card 3 -->
+          <div
+            class="roadmap-card card-3d fade-in-up bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20 relative"
+          >
+            <div class="roadmap-connector"></div>
+            <div class="flex items-center mb-4">
+              <div
+                class="bg-gradient-to-br from-amber-500 to-red-700 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-xl mr-4 shadow-md shadow-amber-500/20"
+              >
+                3
+              </div>
+              <h3 class="text-xl font-bold text-white">Hackathon Prep</h3>
             </div>
-        </section>
+            <p class="text-gray-300">
+              <span class="font-semibold text-amber-400">Final Step:</span>
+              Select a team and start working on the project for the hackathon.
+            </p>
+          </div>
+        </div>
+      </section>
 
-        <!-- Skill Description Section -->
-        <section id="skills" class="fade-in-up" style="animation-delay: 1.4s;">
-            <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">Skill Compendium</h2>
+      <!-- What You Have To Do Section -->
+      <section
+        id="commitments"
+        class="fade-in-up mb-20"
+        style="animation-delay: 0.2s"
+      >
+        <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">
+          Your Daily Commitments
+        </h2>
+        <div
+          class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-amber-500/20"
+        >
+          <ul class="space-y-4 text-gray-300 text-lg">
+            <li class="flex items-start">
+              <span class="text-amber-400 mr-4 mt-1">&#10140;</span
+              ><span
+                ><strong class="text-white">Learn Daily:</strong> Consistency is
+                key. Dedicate time every day to improve your chosen skill.</span
+              >
+            </li>
+            <li class="flex items-start">
+              <span class="text-amber-400 mr-4 mt-1">&#10140;</span
+              ><span
+                ><strong class="text-white">Post Daily:</strong> Share what
+                you've learned on LinkedIn. This builds your public profile and
+                reinforces knowledge. Don't forget to mention us!</span
+              >
+            </li>
+            <li class="flex items-start">
+              <span class="text-amber-400 mr-4 mt-1">&#10140;</span
+              ><span
+                ><strong class="text-white">Clear Your Doubts:</strong> Never
+                stay stuck. Ask questions within the team, collaborate with
+                friends, and find solutions together.</span
+              >
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Registration & Display Section -->
+      <section id="registration" class="mb-20">
+        <div class="max-w-2xl mx-auto">
+          <div
+            class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-amber-500/20"
+          >
+            <h2
+              class="text-2xl font-bold text-center mb-6 text-white font-cinzel"
+            >
+              Join the Coven
+            </h2>
+            <form id="registrationForm" novalidate>
+              <div class="mb-4">
+                <label
+                  for="memberName"
+                  class="block text-sm font-medium text-gray-300 mb-2"
+                  >Full Name</label
+                >
+                <input
+                  type="text"
+                  id="memberName"
+                  name="memberName"
+                  class="w-full px-4 py-2 bg-gray-900/80 border border-amber-500/30 rounded-lg text-white focus:ring-amber-500 focus:border-amber-500 transition-all duration-300"
+                  placeholder="e.g., Ada Lovelace"
+                  required
+                />
+              </div>
+              <div class="mb-4">
+                <label
+                  for="memberSkill"
+                  class="block text-sm font-medium text-gray-300 mb-2"
+                  >Choose Your Skill</label
+                >
+                <select
+                  id="memberSkill"
+                  name="memberSkill"
+                  class="w-full px-4 py-2 bg-gray-900/80 border border-amber-500/30 rounded-lg text-white focus:ring-amber-500 focus:border-amber-500 transition duration-150"
+                >
+                  <option value="HTML/JS/CSS">HTML, JS with simple CSS</option>
+                  <option value="CSS Framework">
+                    A CSS Framework (Bootstrap/Tailwind)
+                  </option>
+                  <option value="REST API">REST API Concepts</option>
+                  <option value="Git & GitHub">Git & GitHub</option>
+                  <option value="Python">Python</option>
+                  <option value="Java">Java</option>
+                  <option value="UI/UX">UI/UX Design</option>
+                  <option value="Frontend Deployment">
+                    Frontend Deployment (Netlify/Vercel)
+                  </option>
+                  <option value="Backend Deployment">
+                    Backend Deployment (Heroku/Render)
+                  </option>
+                  <option value="Other">Other...</option>
+                </select>
+              </div>
+              <div id="otherSkillWrapper" class="mb-6 hidden">
+                <label
+                  for="otherSkill"
+                  class="block text-sm font-medium text-gray-300 mb-2"
+                  >Please Specify Your Skill</label
+                >
+                <input
+                  type="text"
+                  id="otherSkill"
+                  name="otherSkill"
+                  class="w-full px-4 py-2 bg-gray-900/80 border border-amber-500/30 rounded-lg text-white focus:ring-amber-500 focus:border-amber-500 transition-all duration-300"
+                  placeholder="e.g., Blockchain Development"
+                />
+              </div>
+              <div>
+                <button
+                  type="submit"
+                  class="w-full bg-gradient-to-r from-amber-500 to-red-700 text-white font-bold py-3 px-4 rounded-lg hover:from-amber-400 hover:to-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black/50 focus:ring-amber-500 transition-all duration-300 transform hover:scale-105"
+                >
+                  Register & Send
+                </button>
+              </div>
+            </form>
+            <div
+              id="registrationSuccess"
+              class="hidden mt-4 text-center p-3 bg-green-900/50 border border-green-500/50 text-green-300 rounded-lg"
+            >
+              Congratulations! Your registration has been sent.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section id="faq" class="fade-in-up mb-20">
+        <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">
+          Frequently Asked Questions
+        </h2>
+        <div
+          class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-amber-500/20 space-y-4"
+        >
+          <!-- FAQ Item -->
+          <div class="collapsible-item border-b border-amber-500/20 pb-2">
+            <button
+              class="collapsible-toggle w-full flex justify-between items-center text-left"
+            >
+              <span class="text-lg font-semibold text-amber-400"
+                >Do I need prior coding experience?</span
+              >
+              <svg
+                class="collapsible-arrow w-6 h-6 text-amber-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </button>
+            <div class="collapsible-content pt-2 text-gray-400">
+              <p>
+                No, this program is designed for beginners. However, a strong
+                desire to learn and a commitment to the daily tasks are
+                essential.
+              </p>
+            </div>
+          </div>
+          <!-- FAQ Item -->
+          <div class="collapsible-item border-b border-amber-500/20 pb-2">
+            <button
+              class="collapsible-toggle w-full flex justify-between items-center text-left"
+            >
+              <span class="text-lg font-semibold text-amber-400"
+                >How are teams formed for the hackathon?</span
+              >
+              <svg
+                class="collapsible-arrow w-6 h-6 text-amber-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </button>
+            <div class="collapsible-content pt-2 text-gray-400">
+              <p>
+                Teams will be formed based on a combination of skill sets,
+                project interests, and individual performance during the initial
+                learning phase. We aim to create balanced and motivated teams.
+              </p>
+            </div>
+          </div>
+          <!-- FAQ Item -->
+          <div class="collapsible-item border-b border-amber-500/20 pb-2">
+            <button
+              class="collapsible-toggle w-full flex justify-between items-center text-left"
+            >
+              <span class="text-lg font-semibold text-amber-400"
+                >What if I can't dedicate 2 hours every single day?</span
+              >
+              <svg
+                class="collapsible-arrow w-6 h-6 text-amber-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </button>
+            <div class="collapsible-content pt-2 text-gray-400">
+              <p>
+                Consistency is more important than the exact duration. Aim for
+                an average of 12-14 hours per week. We understand that exam
+                periods or other commitments can be demanding, but clear
+                communication with the team is key.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Us Section -->
+      <section id="contact" class="mb-20">
+        <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">
+          Contact & Doubts
+        </h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Contact Form -->
+          <div
+            class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-amber-500/20"
+          >
+            <h3
+              class="text-2xl font-bold text-center mb-6 text-white font-cinzel"
+            >
+              Ask a Question
+            </h3>
+            <form id="contactForm" novalidate>
+              <div class="mb-4">
+                <label
+                  for="doubtTitle"
+                  class="block text-sm font-medium text-gray-300 mb-2"
+                  >Title / Subject</label
+                >
+                <input
+                  type="text"
+                  id="doubtTitle"
+                  name="doubtTitle"
+                  maxlength="50"
+                  class="w-full px-4 py-2 bg-gray-900/80 border border-amber-500/30 rounded-lg text-white focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="Max 50 characters"
+                  required
+                />
+              </div>
+              <div class="mb-6">
+                <label
+                  for="doubtDescription"
+                  class="block text-sm font-medium text-gray-300 mb-2"
+                  >Describe Your Issue</label
+                >
+                <textarea
+                  id="doubtDescription"
+                  name="doubtDescription"
+                  rows="4"
+                  class="w-full px-4 py-2 bg-gray-900/80 border border-amber-500/30 rounded-lg text-white focus:ring-amber-500 focus:border-amber-500"
+                  placeholder="Be as detailed as possible..."
+                  required
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                class="w-full bg-gradient-to-r from-amber-500 to-red-700 text-white font-bold py-3 px-4 rounded-lg hover:from-amber-400 hover:to-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black/50 focus:ring-amber-500 transition-all duration-300 transform hover:scale-105"
+              >
+                Send via Email
+              </button>
+              <p class="text-xs text-gray-500 mt-3 text-center">
+                This will open your default email client.
+              </p>
+            </form>
+          </div>
+          <!-- Contact Info -->
+          <div
+            class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-amber-500/20 flex flex-col justify-center items-center text-center"
+          >
+            <h3 class="text-2xl font-bold mb-6 text-white font-cinzel">
+              Direct Channels
+            </h3>
             <div class="space-y-4">
-                <!-- Skill Item -->
-                <div class="collapsible-item card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20">
-                    <button class="collapsible-toggle w-full flex justify-between items-center text-left">
-                        <h3 class="text-xl font-bold text-amber-400">HTML, JS with simple CSS</h3>
-                        <svg class="collapsible-arrow w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div class="collapsible-content">
-                        <p class="text-gray-400 mb-4">The foundational trio of web development. HTML structures your content, CSS styles it, and JavaScript adds interactivity. Mastering these is the essential first step for any web developer.</p>
-                        <div class="border-t border-gray-700 pt-3">
-                            <h4 class="font-semibold text-gray-300 mb-2">Recommended Learning:</h4>
-                            <ul class="list-disc list-inside text-red-400 space-y-1">
-                               <li><a href="https://www.youtube.com/watch?v=G3e-cpL7ofc" target="_blank" rel="noopener noreferrer" class="hover:underline">Frontend Web Dev Bootcamp by freeCodeCamp.org (Video)</a></li>
-                               <li><a href="https://developer.mozilla.org/en-US/docs/Learn" target="_blank" rel="noopener noreferrer" class="hover:underline">MDN Web Docs - Learn Web Development (Resource)</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- Skill Item -->
-                <div class="collapsible-item card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20">
-                    <button class="collapsible-toggle w-full flex justify-between items-center text-left">
-                        <h3 class="text-xl font-bold text-amber-400">CSS Framework (Bootstrap/Tailwind)</h3>
-                        <svg class="collapsible-arrow w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div class="collapsible-content">
-                        <p class="text-gray-400 mb-4">Accelerate your styling process with pre-built components and utility classes. Tailwind CSS provides low-level utilities for rapid custom designs, while Bootstrap offers ready-to-use components.</p>
-                         <div class="border-t border-gray-700 pt-3">
-                            <h4 class="font-semibold text-gray-300 mb-2">Recommended Learning:</h4>
-                            <ul class="list-disc list-inside text-red-400 space-y-1">
-                               <li><a href="https://www.youtube.com/watch?v=dFgzHOX84xQ" target="_blank" rel="noopener noreferrer" class="hover:underline">Tailwind CSS Full Course for Beginners by Scrimba (Video)</a></li>
-                               <li><a href="https://tailwindcss.com/docs" target="_blank" rel="noopener noreferrer" class="hover:underline">Official Tailwind CSS Docs (Resource)</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- Skill Item -->
-                <div class="collapsible-item card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20">
-                    <button class="collapsible-toggle w-full flex justify-between items-center text-left">
-                        <h3 class="text-xl font-bold text-amber-400">REST API Concepts</h3>
-                        <svg class="collapsible-arrow w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div class="collapsible-content">
-                        <p class="text-gray-400 mb-4">Understand how different software applications communicate over the internet. Learning REST is crucial for connecting your frontend application to backend data sources and services.</p>
-                        <div class="border-t border-gray-700 pt-3">
-                            <h4 class="font-semibold text-gray-300 mb-2">Recommended Learning:</h4>
-                            <ul class="list-disc list-inside text-red-400 space-y-1">
-                               <li><a href="https://www.youtube.com/watch?v=6sUbt-Qp62s" target="_blank" rel="noopener noreferrer" class="hover:underline">REST APIs for Beginners by Web Dev Simplified (Video)</a></li>
-                               <li><a href="https://jsonplaceholder.typicode.com/" target="_blank" rel="noopener noreferrer" class="hover:underline">JSONPlaceholder - Fake Online REST API for testing (Resource)</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- Skill Item -->
-                <div class="collapsible-item card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20">
-                     <button class="collapsible-toggle w-full flex justify-between items-center text-left">
-                        <h3 class="text-xl font-bold text-amber-400">Git & GitHub</h3>
-                        <svg class="collapsible-arrow w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div class="collapsible-content">
-                        <p class="text-gray-400 mb-4">The industry standard for version control. Git tracks code changes, while GitHub hosts projects for collaboration. Essential for team projects.</p>
-                         <div class="border-t border-gray-700 pt-3">
-                            <h4 class="font-semibold text-gray-300 mb-2">Recommended Learning:</h4>
-                            <ul class="list-disc list-inside text-red-400 space-y-1">
-                               <li><a href="https://www.youtube.com/watch?v=RGOj5yH7evk" target="_blank" rel="noopener noreferrer" class="hover:underline">Git and GitHub for Beginners by freeCodeCamp.org (Video)</a></li>
-                               <li><a href="https://ohshitgit.com/" target="_blank" rel="noopener noreferrer" class="hover:underline">Oh Shit, Git!?! - How to fix common mistakes (Resource)</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- Skill Item -->
-                <div class="collapsible-item card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20">
-                    <button class="collapsible-toggle w-full flex justify-between items-center text-left">
-                        <h3 class="text-xl font-bold text-amber-400">Python</h3>
-                         <svg class="collapsible-arrow w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div class="collapsible-content">
-                        <p class="text-gray-400 mb-4">A versatile, readable language used in backend development, data science, automation, and more. It has powerful libraries like Flask (for blog-level websites) and Django (for production-level websites).</p>
-                         <div class="border-t border-gray-700 pt-3">
-                            <h4 class="font-semibold text-gray-300 mb-2">Recommended Learning:</h4>
-                            <ul class="list-disc list-inside text-red-400 space-y-1">
-                               <li><a href="https://youtube.com/playlist?list=PLGynLPcxDi0F60EzeZc9Pa1tSQbYngQ5r" target="_blank" rel="noopener noreferrer" class="hover:underline">Backend Developer's Python Playlist (Flask/Django)</a></li>
-                               <li><a href="https://www.youtube.com/watch?v=eWRfhZUzrAc" target="_blank" rel="noopener noreferrer" class="hover:underline">Python Full Course for Beginners by freeCodeCamp.org (Video)</a></li>
-                               <li><a href="https://www.learnpython.org/" target="_blank" rel="noopener noreferrer" class="hover:underline">LearnPython.org Interactive Tutorial (Resource)</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- Skill Item -->
-                 <div class="collapsible-item card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20">
-                    <button class="collapsible-toggle w-full flex justify-between items-center text-left">
-                        <h3 class="text-xl font-bold text-amber-400">Java</h3>
-                         <svg class="collapsible-arrow w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div class="collapsible-content">
-                        <p class="text-gray-400 mb-4">A robust, object-oriented language widely used for building enterprise-scale applications, Android apps, and large backend systems. Known for its "write once, run anywhere" philosophy.</p>
-                         <div class="border-t border-gray-700 pt-3">
-                            <h4 class="font-semibold text-gray-300 mb-2">Recommended Learning:</h4>
-                            <ul class="list-disc list-inside text-red-400 space-y-1">
-                               <li><a href="https://youtu.be/Xnp0YZUe73g" target="_blank" rel="noopener noreferrer" class="hover:underline">Java Roadmap (What, Where, Why) (Video)</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- Skill Item -->
-                <div class="collapsible-item card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20">
-                     <button class="collapsible-toggle w-full flex justify-between items-center text-left">
-                        <h3 class="text-xl font-bold text-amber-400">UI/UX Design</h3>
-                        <svg class="collapsible-arrow w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div class="collapsible-content">
-                        <p class="text-gray-400 mb-4">Focuses on creating intuitive, appealing user interfaces (UI) and enhancing user experience (UX). It involves wireframing, prototyping, and understanding user behavior.</p>
-                         <div class="border-t border-gray-700 pt-3">
-                            <h4 class="font-semibold text-gray-300 mb-2">Recommended Learning:</h4>
-                            <ul class="list-disc list-inside text-red-400 space-y-1">
-                               <li><a href="https://www.youtube.com/watch?v=c9Wg6i_1gX4" target="_blank" rel="noopener noreferrer" class="hover:underline">UI / UX Design Tutorial in Figma by freeCodeCamp.org (Video)</a></li>
-                               <li><a href="https://www.figma.com/community" target="_blank" rel="noopener noreferrer" class="hover:underline">Figma Community for inspiration (Resource)</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <!-- Skill Item -->
-                <div class="collapsible-item card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20">
-                    <button class="collapsible-toggle w-full flex justify-between items-center text-left">
-                        <h3 class="text-xl font-bold text-amber-400">Frontend & Backend Deployment</h3>
-                        <svg class="collapsible-arrow w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div class="collapsible-content">
-                        <p class="text-gray-400 mb-4">Bringing your project to life. Learn to host your frontend on services like Vercel and your backend on platforms like Heroku, making your applications accessible to the world.</p>
-                        <div class="border-t border-gray-700 pt-3">
-                            <h4 class="font-semibold text-gray-300 mb-2">Recommended Learning:</h4>
-                            <ul class="list-disc list-inside text-red-400 space-y-1">
-                               <li><a href="https://www.youtube.com/watch?v=71wsmX_N-wU" target="_blank" rel="noopener noreferrer" class="hover:underline">Deploy your websites in minutes by Fireship (Video)</a></li>
-                                <li><a href="https://vercel.com/docs" target="_blank" rel="noopener noreferrer" class="hover:underline">Vercel Docs (Frontend Resource)</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                 <!-- Skill Item -->
-                <div class="collapsible-item card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20">
-                    <button class="collapsible-toggle w-full flex justify-between items-center text-left">
-                        <h3 class="text-xl font-bold text-amber-400">Career Roadmaps</h3>
-                        <svg class="collapsible-arrow w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                    </button>
-                    <div class="collapsible-content">
-                        <p class="text-gray-400 mb-4">Explore these valuable roadmaps to understand different career paths and choose a sector that aligns with your interests.</p>
-                        <div class="border-t border-gray-700 pt-3">
-                            <h4 class="font-semibold text-gray-300 mb-2">Recommended Learning:</h4>
-                            <ul class="list-disc list-inside text-red-400 space-y-1">
-                               <li><a href="https://youtube.com/playlist?list=PLGynLPcxDi0FmWuMlNluaBT2m9EpvutQt" target="_blank" rel="noopener noreferrer" class="hover:underline">Valuable Career Start Roadmaps (Playlist)</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+              <div>
+                <h4 class="text-lg font-semibold text-amber-400">Email</h4>
+                <a
+                  href="mailto:B-C-A-Coven2025@outlook.com"
+                  class="text-gray-300 hover:text-white transition-colors"
+                  >B-C-A-Coven2025@outlook.com</a
+                >
+              </div>
+              <div>
+                <h4 class="text-lg font-semibold text-amber-400">
+                  Discord Channel
+                </h4>
+                <a
+                  href="https://discord.gg/A5YttQnH"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-gray-300 hover:text-white transition-colors"
+                  >🔥BcaCoven->discord🔥</a
+                >
+              </div>
             </div>
-        </section>
+          </div>
+        </div>
+      </section>
 
+      <!-- Our Goals Section -->
+      <section
+        id="goals"
+        class="fade-in-up mb-20"
+        style="animation-delay: 0.4s"
+      >
+        <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">
+          Our Core Objectives
+        </h2>
+        <div class="grid md:grid-cols-3 gap-8">
+          <div
+            class="card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20 text-center"
+          >
+            <h3 class="text-xl font-bold text-amber-400 mb-2">
+              Dominate Hackathons
+            </h3>
+            <p class="text-gray-400">
+              Collaborate on innovative projects, compete against the best, and
+              showcase your skills on a competitive stage.
+            </p>
+          </div>
+          <div
+            class="card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20 text-center"
+          >
+            <h3 class="text-xl font-bold text-amber-400 mb-2">
+              Build Real Projects
+            </h3>
+            <p class="text-gray-400">
+              Move beyond tutorials. Create impactful, real-world applications
+              that solve actual problems and build your portfolio.
+            </p>
+          </div>
+          <div
+            class="card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20 text-center"
+          >
+            <h3 class="text-xl font-bold text-amber-400 mb-2">
+              Grab Internships
+            </h3>
+            <p class="text-gray-400">
+              Gain the experience, projects, and network necessary to land
+              valuable internships and kickstart your tech career.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Benefits Section -->
+      <section
+        id="perks"
+        class="fade-in-up mb-20"
+        style="animation-delay: 0.6s"
+      >
+        <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">
+          Perks of the Coven
+        </h2>
+        <div
+          class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-amber-500/20"
+        >
+          <ul
+            class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 text-gray-300"
+          >
+            <li class="flex items-start">
+              <span class="text-amber-400 mr-3 mt-1">&#10003;</span
+              ><span>Build a professional GitHub & LinkedIn profile.</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-amber-400 mr-3 mt-1">&#10003;</span
+              ><span>Master teamwork and collaboration skills.</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-amber-400 mr-3 mt-1">&#10003;</span
+              ><span>Learn to handle the pressure of deadlines.</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-amber-400 mr-3 mt-1">&#10003;</span
+              ><span>Gain experience for GSoC and other programs.</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-amber-400 mr-3 mt-1">&#10003;</span
+              ><span>Create portfolio-worthy, real-world projects.</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-amber-400 mr-3 mt-1">&#10003;</span
+              ><span>Unlock freelancing opportunities to earn money.</span>
+            </li>
+            <li class="flex items-start">
+              <span class="text-amber-400 mr-3 mt-1">&#10003;</span
+              ><span>Receive guidance and help to find internships.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Rules Section -->
+      <section id="pact" class="fade-in-up mb-20" style="animation-delay: 0.8s">
+        <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">
+          Coven Pact
+        </h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          <!-- Eligibility -->
+          <div
+            class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-green-500/20"
+          >
+            <h3
+              class="text-2xl font-bold text-center mb-6 text-green-400 font-cinzel"
+            >
+              Eligibility
+            </h3>
+            <ul class="space-y-3 text-gray-300">
+              <li class="flex items-center">
+                <span class="text-green-400 text-2xl mr-3">&#10003;</span>Have a
+                functional laptop.
+              </li>
+              <li class="flex items-center">
+                <span class="text-green-400 text-2xl mr-3">&#10003;</span
+                >Dedicate at least 2 hours daily.
+              </li>
+              <li class="flex items-center">
+                <span class="text-green-400 text-2xl mr-3">&#10003;</span
+                >Possess a strong team spirit.
+              </li>
+              <li class="flex items-center">
+                <span class="text-green-400 text-2xl mr-3">&#10003;</span>Be
+                punctual and respect deadlines.
+              </li>
+            </ul>
+          </div>
+          <!-- What to Avoid -->
+          <div
+            class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-red-500/20"
+          >
+            <h3
+              class="text-2xl font-bold text-center mb-6 text-red-400 font-cinzel"
+            >
+              What to Avoid
+            </h3>
+            <ul class="space-y-3 text-gray-300">
+              <li class="flex items-center">
+                <span class="text-red-400 text-2xl mr-3">&#10007;</span
+                >Disclosing team ideas externally.
+              </li>
+              <li class="flex items-center">
+                <span class="text-red-400 text-2xl mr-3">&#10007;</span>Wasting
+                time by over-exploring topics.
+              </li>
+              <li class="flex items-center">
+                <span class="text-red-400 text-2xl mr-3">&#10007;</span
+                >Multitasking at the cost of quality.
+              </li>
+              <li class="flex items-center">
+                <span class="text-red-400 text-2xl mr-3">&#10007;</span>Creating
+                disturbances or misleading others.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Final Message Section -->
+      <section class="fade-in-up text-center mb-20" style="animation-delay: 1s">
+        <h2 class="text-4xl font-bold text-center mb-8 text-white font-cinzel">
+          A Message to Our New Members
+        </h2>
+        <p class="text-gray-400 max-w-3xl mx-auto text-lg">
+          Welcome to the Coven! By registering, you've taken the first step on a
+          challenging yet incredibly rewarding journey. We are thrilled to have
+          you with us. Remember that your growth is our collective success. Stay
+          curious, stay dedicated, and let's build amazing things together.
+        </p>
+      </section>
+
+      <!-- Coven Lexicon Section -->
+      <section
+        id="lexicon"
+        class="fade-in-up mb-20"
+        style="animation-delay: 1.2s"
+      >
+        <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">
+          Coven Lexicon
+        </h2>
+        <div
+          class="card-3d bg-black/50 backdrop-blur-sm p-8 rounded-xl shadow-lg border border-amber-500/20 space-y-4"
+        >
+          <!-- Lexicon Item -->
+          <div class="collapsible-item border-b border-amber-500/20 pb-2">
+            <button
+              class="collapsible-toggle w-full flex justify-between items-center text-left"
+            >
+              <span class="text-lg font-semibold text-amber-400"
+                >What is a Hackathon?</span
+              >
+              <svg
+                class="collapsible-arrow w-6 h-6 text-amber-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </button>
+            <div class="collapsible-content pt-2 text-gray-400">
+              <p>
+                An invention marathon where developers, designers, and others
+                collaborate intensively on software projects over a short period
+                (usually 24-48 hours). It's a place to learn, build, and
+                network.
+              </p>
+            </div>
+          </div>
+          <!-- Lexicon Item -->
+          <div class="collapsible-item border-b border-amber-500/20 pb-2">
+            <button
+              class="collapsible-toggle w-full flex justify-between items-center text-left"
+            >
+              <span class="text-lg font-semibold text-amber-400"
+                >What is GSoC?</span
+              >
+              <svg
+                class="collapsible-arrow w-6 h-6 text-amber-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </button>
+            <div class="collapsible-content pt-2 text-gray-400">
+              <p>
+                Google Summer of Code is a global program focused on bringing
+                more student developers into open source software development.
+                Students work on a 10-week programming project with an
+                open-source organization during their summer break.
+              </p>
+            </div>
+          </div>
+          <!-- Lexicon Item -->
+          <div class="collapsible-item border-b border-amber-500/20 pb-2">
+            <button
+              class="collapsible-toggle w-full flex justify-between items-center text-left"
+            >
+              <span class="text-lg font-semibold text-amber-400"
+                >What is Version Control?</span
+              >
+              <svg
+                class="collapsible-arrow w-6 h-6 text-amber-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </button>
+            <div class="collapsible-content pt-2 text-gray-400">
+              <p>
+                A system that records changes to a file or set of files over
+                time so that you can recall specific versions later. For
+                software projects, it allows multiple developers to work
+                together without overwriting each other's work. Git is the most
+                popular version control system.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skill Description Section -->
+      <section id="skills" class="fade-in-up" style="animation-delay: 1.4s">
+        <h2 class="text-4xl font-bold text-center mb-12 text-white font-cinzel">
+          Skill Compendium
+        </h2>
+        <div class="space-y-4">
+          <!-- Skill Item -->
+          <div
+            class="collapsible-item card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20"
+          >
+            <button
+              class="collapsible-toggle w-full flex justify-between items-center text-left"
+            >
+              <h3 class="text-xl font-bold text-amber-400">
+                HTML, JS with simple CSS
+              </h3>
+              <svg
+                class="collapsible-arrow w-6 h-6 text-amber-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </button>
+            <div class="collapsible-content">
+              <p class="text-gray-400 mb-4">
+                The foundational trio of web development. HTML structures your
+                content, CSS styles it, and JavaScript adds interactivity.
+                Mastering these is the essential first step for any web
+                developer.
+              </p>
+              <div class="border-t border-gray-700 pt-3">
+                <h4 class="font-semibold text-gray-300 mb-2">
+                  Recommended Learning:
+                </h4>
+                <ul class="list-disc list-inside text-red-400 space-y-1">
+                  <li>
+                    <a
+                      href="https://www.youtube.com/watch?v=G3e-cpL7ofc"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="hover:underline"
+                      >Frontend Web Dev Bootcamp by freeCodeCamp.org (Video)</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://developer.mozilla.org/en-US/docs/Learn"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="hover:underline"
+                      >MDN Web Docs - Learn Web Development (Resource)</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- Skill Item -->
+          <div
+            class="collapsible-item card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20"
+          >
+            <button
+              class="collapsible-toggle w-full flex justify-between items-center text-left"
+            >
+              <h3 class="text-xl font-bold text-amber-400">
+                CSS Framework (Bootstrap/Tailwind)
+              </h3>
+              <svg
+                class="collapsible-arrow w-6 h-6 text-amber-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </button>
+            <div class="collapsible-content">
+              <p class="text-gray-400 mb-4">
+                Accelerate your styling process with pre-built components and
+                utility classes. Tailwind CSS provides low-level utilities for
+                rapid custom designs, while Bootstrap offers ready-to-use
+                components.
+              </p>
+              <div class="border-t border-gray-700 pt-3">
+                <h4 class="font-semibold text-gray-300 mb-2">
+                  Recommended Learning:
+                </h4>
+                <ul class="list-disc list-inside text-red-400 space-y-1">
+                  <li>
+                    <a
+                      href="https://www.youtube.com/watch?v=dFgzHOX84xQ"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="hover:underline"
+                      >Tailwind CSS Full Course for Beginners by Scrimba
+                      (Video)</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://tailwindcss.com/docs"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="hover:underline"
+                      >Official Tailwind CSS Docs (Resource)</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- Skill Item -->
+          <div
+            class="collapsible-item card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20"
+          >
+            <button
+              class="collapsible-toggle w-full flex justify-between items-center text-left"
+            >
+              <h3 class="text-xl font-bold text-amber-400">
+                REST API Concepts
+              </h3>
+              <svg
+                class="collapsible-arrow w-6 h-6 text-amber-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </button>
+            <div class="collapsible-content">
+              <p class="text-gray-400 mb-4">
+                Understand how different software applications communicate over
+                the internet. Learning REST is crucial for connecting your
+                frontend application to backend data sources and services.
+              </p>
+              <div class="border-t border-gray-700 pt-3">
+                <h4 class="font-semibold text-gray-300 mb-2">
+                  Recommended Learning:
+                </h4>
+                <ul class="list-disc list-inside text-red-400 space-y-1">
+                  <li>
+                    <a
+                      href="https://www.youtube.com/watch?v=6sUbt-Qp62s"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="hover:underline"
+                      >REST APIs for Beginners by Web Dev Simplified (Video)</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://jsonplaceholder.typicode.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="hover:underline"
+                      >JSONPlaceholder - Fake Online REST API for testing
+                      (Resource)</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- Skill Item -->
+          <div
+            class="collapsible-item card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20"
+          >
+            <button
+              class="collapsible-toggle w-full flex justify-between items-center text-left"
+            >
+              <h3 class="text-xl font-bold text-amber-400">Git & GitHub</h3>
+              <svg
+                class="collapsible-arrow w-6 h-6 text-amber-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </button>
+            <div class="collapsible-content">
+              <p class="text-gray-400 mb-4">
+                The industry standard for version control. Git tracks code
+                changes, while GitHub hosts projects for collaboration.
+                Essential for team projects.
+              </p>
+              <div class="border-t border-gray-700 pt-3">
+                <h4 class="font-semibold text-gray-300 mb-2">
+                  Recommended Learning:
+                </h4>
+                <ul class="list-disc list-inside text-red-400 space-y-1">
+                  <li>
+                    <a
+                      href="https://www.youtube.com/watch?v=RGOj5yH7evk"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="hover:underline"
+                      >Git and GitHub for Beginners by freeCodeCamp.org
+                      (Video)</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://ohshitgit.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="hover:underline"
+                      >Oh Shit, Git!?! - How to fix common mistakes
+                      (Resource)</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- Skill Item -->
+          <div
+            class="collapsible-item card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20"
+          >
+            <button
+              class="collapsible-toggle w-full flex justify-between items-center text-left"
+            >
+              <h3 class="text-xl font-bold text-amber-400">Python</h3>
+              <svg
+                class="collapsible-arrow w-6 h-6 text-amber-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </button>
+            <div class="collapsible-content">
+              <p class="text-gray-400 mb-4">
+                A versatile, readable language used in backend development, data
+                science, automation, and more. It has powerful libraries like
+                Flask (for blog-level websites) and Django (for production-level
+                websites).
+              </p>
+              <div class="border-t border-gray-700 pt-3">
+                <h4 class="font-semibold text-gray-300 mb-2">
+                  Recommended Learning:
+                </h4>
+                <ul class="list-disc list-inside text-red-400 space-y-1">
+                  <li>
+                    <a
+                      href="https://youtube.com/playlist?list=PLGynLPcxDi0F60EzeZc9Pa1tSQbYngQ5r"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="hover:underline"
+                      >Backend Developer's Python Playlist (Flask/Django)</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.youtube.com/watch?v=eWRfhZUzrAc"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="hover:underline"
+                      >Python Full Course for Beginners by freeCodeCamp.org
+                      (Video)</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.learnpython.org/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="hover:underline"
+                      >LearnPython.org Interactive Tutorial (Resource)</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- Skill Item -->
+          <div
+            class="collapsible-item card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20"
+          >
+            <button
+              class="collapsible-toggle w-full flex justify-between items-center text-left"
+            >
+              <h3 class="text-xl font-bold text-amber-400">Java</h3>
+              <svg
+                class="collapsible-arrow w-6 h-6 text-amber-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </button>
+            <div class="collapsible-content">
+              <p class="text-gray-400 mb-4">
+                A robust, object-oriented language widely used for building
+                enterprise-scale applications, Android apps, and large backend
+                systems. Known for its "write once, run anywhere" philosophy.
+              </p>
+              <div class="border-t border-gray-700 pt-3">
+                <h4 class="font-semibold text-gray-300 mb-2">
+                  Recommended Learning:
+                </h4>
+                <ul class="list-disc list-inside text-red-400 space-y-1">
+                  <li>
+                    <a
+                      href="https://youtu.be/Xnp0YZUe73g"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="hover:underline"
+                      >Java Roadmap (What, Where, Why) (Video)</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- Skill Item -->
+          <div
+            class="collapsible-item card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20"
+          >
+            <button
+              class="collapsible-toggle w-full flex justify-between items-center text-left"
+            >
+              <h3 class="text-xl font-bold text-amber-400">UI/UX Design</h3>
+              <svg
+                class="collapsible-arrow w-6 h-6 text-amber-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </button>
+            <div class="collapsible-content">
+              <p class="text-gray-400 mb-4">
+                Focuses on creating intuitive, appealing user interfaces (UI)
+                and enhancing user experience (UX). It involves wireframing,
+                prototyping, and understanding user behavior.
+              </p>
+              <div class="border-t border-gray-700 pt-3">
+                <h4 class="font-semibold text-gray-300 mb-2">
+                  Recommended Learning:
+                </h4>
+                <ul class="list-disc list-inside text-red-400 space-y-1">
+                  <li>
+                    <a
+                      href="https://www.youtube.com/watch?v=c9Wg6i_1gX4"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="hover:underline"
+                      >UI / UX Design Tutorial in Figma by freeCodeCamp.org
+                      (Video)</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.figma.com/community"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="hover:underline"
+                      >Figma Community for inspiration (Resource)</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- Skill Item -->
+          <div
+            class="collapsible-item card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20"
+          >
+            <button
+              class="collapsible-toggle w-full flex justify-between items-center text-left"
+            >
+              <h3 class="text-xl font-bold text-amber-400">
+                Frontend & Backend Deployment
+              </h3>
+              <svg
+                class="collapsible-arrow w-6 h-6 text-amber-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </button>
+            <div class="collapsible-content">
+              <p class="text-gray-400 mb-4">
+                Bringing your project to life. Learn to host your frontend on
+                services like Vercel and your backend on platforms like Heroku,
+                making your applications accessible to the world.
+              </p>
+              <div class="border-t border-gray-700 pt-3">
+                <h4 class="font-semibold text-gray-300 mb-2">
+                  Recommended Learning:
+                </h4>
+                <ul class="list-disc list-inside text-red-400 space-y-1">
+                  <li>
+                    <a
+                      href="https://www.youtube.com/watch?v=71wsmX_N-wU"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="hover:underline"
+                      >Deploy your websites in minutes by Fireship (Video)</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://vercel.com/docs"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="hover:underline"
+                      >Vercel Docs (Frontend Resource)</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <!-- Skill Item -->
+          <div
+            class="collapsible-item card-3d bg-black/50 backdrop-blur-sm p-6 rounded-xl shadow-lg border border-amber-500/20"
+          >
+            <button
+              class="collapsible-toggle w-full flex justify-between items-center text-left"
+            >
+              <h3 class="text-xl font-bold text-amber-400">Career Roadmaps</h3>
+              <svg
+                class="collapsible-arrow w-6 h-6 text-amber-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                ></path>
+              </svg>
+            </button>
+            <div class="collapsible-content">
+              <p class="text-gray-400 mb-4">
+                Explore these valuable roadmaps to understand different career
+                paths and choose a sector that aligns with your interests.
+              </p>
+              <div class="border-t border-gray-700 pt-3">
+                <h4 class="font-semibold text-gray-300 mb-2">
+                  Recommended Learning:
+                </h4>
+                <ul class="list-disc list-inside text-red-400 space-y-1">
+                  <li>
+                    <a
+                      href="https://youtube.com/playlist?list=PLGynLPcxDi0FmWuMlNluaBT2m9EpvutQt"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="hover:underline"
+                      >Valuable Career Start Roadmaps (Playlist)</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
-    
+
     <!-- Footer -->
     <footer class="relative z-10 text-center py-8 text-gray-500">
-        <p>&copy; 2025 BCA Coven. All rights reserved.</p>
+      <p>&copy; 2025 BCA Coven. All rights reserved.</p>
     </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // --- DATA PERSISTENCE SETUP (localStorage) ---
-            let projects = JSON.parse(localStorage.getItem('covenProjects')) || [
-                 // Add default project if the list is empty
-                 { title: 'Universal Comparison', link: 'https://universal-comparison.onrender.com/', description: 'Our first hackathon project. A tool for comparing anything from tech specs to movie ratings.', tech: 'HTML, CSS, JavaScript, API' },
-                 { title: 'Arcade-Points-Calculator', link: 'https://shcode.dev', description: '• Developed a Python/Django management command to automate the synchronization of leaderboard data from CSV files into a PostgreSQL database, eliminating manual entry and ensuring data consistency.', tech: 'Python, Django, PostgreSQL' }
-            ];
+      document.addEventListener("DOMContentLoaded", () => {
+        // --- DATA PERSISTENCE SETUP (localStorage) ---
+        let projects = JSON.parse(localStorage.getItem("covenProjects")) || [
+          // Add default project if the list is empty
+          {
+            title: "Universal Comparison",
+            link: "https://universal-comparison.onrender.com/",
+            description:
+              "Our first hackathon project. A tool for comparing anything from tech specs to movie ratings.",
+            tech: "HTML, CSS, JavaScript, API",
+          },
+        ];
 
-            const projectsDisplay = document.getElementById('projectsDisplay');
-            const noProjectsMessage = document.getElementById('noProjectsMessage');
+        const projectsDisplay = document.getElementById("projectsDisplay");
+        const noProjectsMessage = document.getElementById("noProjectsMessage");
 
-            // --- NAVBAR LOGIC ---
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const navLinks = document.querySelectorAll('nav a');
-            const menuOpenIcon = document.getElementById('menu-open-icon');
-            const menuCloseIcon = document.getElementById('menu-close-icon');
+        // --- NAVBAR LOGIC ---
+        const mobileMenuButton = document.getElementById("mobile-menu-button");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const navLinks = document.querySelectorAll("nav a");
+        const menuOpenIcon = document.getElementById("menu-open-icon");
+        const menuCloseIcon = document.getElementById("menu-close-icon");
 
-            mobileMenuButton.addEventListener('click', () => {
-                const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
-                mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
-                mobileMenu.classList.toggle('hidden');
-                menuOpenIcon.classList.toggle('hidden');
-                menuCloseIcon.classList.toggle('hidden');
-            });
+        mobileMenuButton.addEventListener("click", () => {
+          const isExpanded =
+            mobileMenuButton.getAttribute("aria-expanded") === "true";
+          mobileMenuButton.setAttribute("aria-expanded", !isExpanded);
+          mobileMenu.classList.toggle("hidden");
+          menuOpenIcon.classList.toggle("hidden");
+          menuCloseIcon.classList.toggle("hidden");
+        });
 
-            navLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    if (!mobileMenu.classList.contains('hidden')) {
-                        mobileMenu.classList.add('hidden');
-                        mobileMenuButton.setAttribute('aria-expanded', 'false');
-                        menuOpenIcon.classList.remove('hidden');
-                        menuCloseIcon.classList.add('hidden');
-                    }
-                });
-            });
-
-
-            // --- FORM LOGIC ---
-            const registrationForm = document.getElementById('registrationForm');
-            const memberSkillSelect = document.getElementById('memberSkill');
-            const otherSkillWrapper = document.getElementById('otherSkillWrapper');
-            const otherSkillInput = document.getElementById('otherSkill');
-            const registrationSuccessMessage = document.getElementById('registrationSuccess');
-
-            memberSkillSelect.addEventListener('change', () => {
-                if (memberSkillSelect.value === 'Other') {
-                    otherSkillWrapper.classList.remove('hidden');
-                    otherSkillInput.setAttribute('required', 'required');
-                } else {
-                    otherSkillWrapper.classList.add('hidden');
-                    otherSkillInput.removeAttribute('required');
-                }
-            });
-            
-            registrationForm.addEventListener('submit', (event) => {
-                event.preventDefault();
-
-                const memberName = registrationForm.elements.memberName.value;
-                const skillValue = registrationForm.elements.memberSkill.value;
-                const nameInput = registrationForm.elements.memberName;
-                let finalSkill = skillValue;
-                
-                if (!validateAndShowError(nameInput)) return;
-                
-                if (skillValue === 'Other') {
-                    finalSkill = otherSkillInput.value.trim();
-                    if (!validateAndShowError(otherSkillInput)) return;
-                }
-                
-                const email = 'B-C-A-Coven2025@outlook.com';
-                const subject = `New BCA Coven Registration: ${memberName}`;
-                const body = `A new member has registered!\n\nName: ${memberName}\nChosen Skill: ${finalSkill}`;
-                window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-                registrationSuccessMessage.classList.remove('hidden');
-                registrationSuccessMessage.classList.add('success-message');
-
-                registrationForm.reset();
-                otherSkillWrapper.classList.add('hidden');
-                otherSkillInput.removeAttribute('required');
-                
-                setTimeout(() => {
-                    registrationSuccessMessage.classList.add('hidden');
-                    registrationSuccessMessage.classList.remove('success-message');
-                }, 4000);
-            });
-            
-            // --- ADD PROJECT LOGIC ---
-            const addProjectForm = document.getElementById('addProjectForm');
-
-            addProjectForm.addEventListener('submit', e => {
-                e.preventDefault();
-                const title = addProjectForm.elements.projectTitle.value;
-                const link = addProjectForm.elements.projectLink.value;
-                const description = addProjectForm.elements.projectDescription.value;
-                const tech = addProjectForm.elements.projectTech.value;
-
-                if (!validateAndShowError(addProjectForm.elements.projectTitle) ||
-                    !validateAndShowError(addProjectForm.elements.projectLink) ||
-                    !validateAndShowError(addProjectForm.elements.projectDescription) ||
-                    !validateAndShowError(addProjectForm.elements.projectTech)) {
-                    return;
-                }
-                
-                const newProject = { title, link, description, tech };
-                projects.unshift(newProject);
-                localStorage.setItem('covenProjects', JSON.stringify(projects));
-                renderProjects();
-                
-                addProjectForm.reset();
-            });
-
-
-            // --- CONTACT FORM LOGIC ---
-            const contactForm = document.getElementById('contactForm');
-            contactForm.addEventListener('submit', e => {
-                e.preventDefault();
-                const title = contactForm.elements.doubtTitle.value;
-                const desc = contactForm.elements.doubtDescription.value;
-                
-                if (!validateAndShowError(contactForm.elements.doubtTitle)) return;
-                if (!validateAndShowError(contactForm.elements.doubtDescription)) return;
-
-                const email = 'B-C-A-Coven2025@outlook.com';
-                const subject = encodeURIComponent(title);
-                const body = encodeURIComponent(desc);
-                window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
-                contactForm.reset();
-            });
-
-            // --- RENDER FUNCTIONS ---
-            function renderProjects() {
-                projectsDisplay.innerHTML = '';
-                 if (projects.length === 0) {
-                    if(noProjectsMessage) noProjectsMessage.style.display = 'block';
-                } else {
-                    if(noProjectsMessage) noProjectsMessage.style.display = 'none';
-                    projects.forEach(p => addProjectToDOM(p.title, p.link, p.description, p.tech));
-                }
+        navLinks.forEach((link) => {
+          link.addEventListener("click", () => {
+            if (!mobileMenu.classList.contains("hidden")) {
+              mobileMenu.classList.add("hidden");
+              mobileMenuButton.setAttribute("aria-expanded", "false");
+              menuOpenIcon.classList.remove("hidden");
+              menuCloseIcon.classList.add("hidden");
             }
-            
-            // --- DOM MANIPULATION FUNCTIONS ---
-            function addProjectToDOM(title, link, description, tech) {
-                const projectCard = document.createElement('div');
-                projectCard.className = 'new-project bg-gray-900/70 p-4 rounded-lg border-l-4 border-purple-500';
-                
-                const techBadges = (tech || "").split(',')
-                    .map(t => t.trim())
-                    .filter(t => t)
-                    .map(t => `<span class="text-xs font-medium text-cyan-200 bg-cyan-900/50 px-2.5 py-1 rounded-full">${escapeHTML(t)}</span>`)
-                    .join(' ');
+          });
+        });
 
-                projectCard.innerHTML = `
+        // --- FORM LOGIC ---
+        const registrationForm = document.getElementById("registrationForm");
+        const memberSkillSelect = document.getElementById("memberSkill");
+        const otherSkillWrapper = document.getElementById("otherSkillWrapper");
+        const otherSkillInput = document.getElementById("otherSkill");
+        const registrationSuccessMessage = document.getElementById(
+          "registrationSuccess"
+        );
+
+        memberSkillSelect.addEventListener("change", () => {
+          if (memberSkillSelect.value === "Other") {
+            otherSkillWrapper.classList.remove("hidden");
+            otherSkillInput.setAttribute("required", "required");
+          } else {
+            otherSkillWrapper.classList.add("hidden");
+            otherSkillInput.removeAttribute("required");
+          }
+        });
+
+        registrationForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+
+          const memberName = registrationForm.elements.memberName.value;
+          const skillValue = registrationForm.elements.memberSkill.value;
+          const nameInput = registrationForm.elements.memberName;
+          let finalSkill = skillValue;
+
+          if (!validateAndShowError(nameInput)) return;
+
+          if (skillValue === "Other") {
+            finalSkill = otherSkillInput.value.trim();
+            if (!validateAndShowError(otherSkillInput)) return;
+          }
+
+          const email = "B-C-A-Coven2025@outlook.com";
+          const subject = `New BCA Coven Registration: ${memberName}`;
+          const body = `A new member has registered!\n\nName: ${memberName}\nChosen Skill: ${finalSkill}`;
+          window.location.href = `mailto:${email}?subject=${encodeURIComponent(
+            subject
+          )}&body=${encodeURIComponent(body)}`;
+
+          registrationSuccessMessage.classList.remove("hidden");
+          registrationSuccessMessage.classList.add("success-message");
+
+          registrationForm.reset();
+          otherSkillWrapper.classList.add("hidden");
+          otherSkillInput.removeAttribute("required");
+
+          setTimeout(() => {
+            registrationSuccessMessage.classList.add("hidden");
+            registrationSuccessMessage.classList.remove("success-message");
+          }, 4000);
+        });
+
+        // --- ADD PROJECT LOGIC ---
+        const addProjectForm = document.getElementById("addProjectForm");
+
+        addProjectForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const title = addProjectForm.elements.projectTitle.value;
+          const link = addProjectForm.elements.projectLink.value;
+          const description = addProjectForm.elements.projectDescription.value;
+          const tech = addProjectForm.elements.projectTech.value;
+
+          if (
+            !validateAndShowError(addProjectForm.elements.projectTitle) ||
+            !validateAndShowError(addProjectForm.elements.projectLink) ||
+            !validateAndShowError(addProjectForm.elements.projectDescription) ||
+            !validateAndShowError(addProjectForm.elements.projectTech)
+          ) {
+            return;
+          }
+
+          const newProject = { title, link, description, tech };
+          projects.unshift(newProject);
+          localStorage.setItem("covenProjects", JSON.stringify(projects));
+          renderProjects();
+
+          addProjectForm.reset();
+        });
+
+        // --- CONTACT FORM LOGIC ---
+        const contactForm = document.getElementById("contactForm");
+        contactForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const title = contactForm.elements.doubtTitle.value;
+          const desc = contactForm.elements.doubtDescription.value;
+
+          if (!validateAndShowError(contactForm.elements.doubtTitle)) return;
+          if (!validateAndShowError(contactForm.elements.doubtDescription))
+            return;
+
+          const email = "B-C-A-Coven2025@outlook.com";
+          const subject = encodeURIComponent(title);
+          const body = encodeURIComponent(desc);
+          window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+          contactForm.reset();
+        });
+
+        // --- RENDER FUNCTIONS ---
+        function renderProjects() {
+          projectsDisplay.innerHTML = "";
+          if (projects.length === 0) {
+            if (noProjectsMessage) noProjectsMessage.style.display = "block";
+          } else {
+            if (noProjectsMessage) noProjectsMessage.style.display = "none";
+            projects.forEach((p) =>
+              addProjectToDOM(p.title, p.link, p.description, p.tech)
+            );
+          }
+        }
+
+        // --- DOM MANIPULATION FUNCTIONS ---
+        function addProjectToDOM(title, link, description, tech) {
+          const projectCard = document.createElement("div");
+          projectCard.className =
+            "new-project bg-gray-900/70 p-4 rounded-lg border-l-4 border-purple-500";
+
+          const techBadges = (tech || "")
+            .split(",")
+            .map((t) => t.trim())
+            .filter((t) => t)
+            .map(
+              (t) =>
+                `<span class="text-xs font-medium text-cyan-200 bg-cyan-900/50 px-2.5 py-1 rounded-full">${escapeHTML(
+                  t
+                )}</span>`
+            )
+            .join(" ");
+
+          projectCard.innerHTML = `
                     <div class="flex justify-between items-start">
-                        <h4 class="text-lg font-semibold text-white">${escapeHTML(title)}</h4>
-                        <a href="${escapeHTML(link)}" target="_blank" rel="noopener noreferrer" class="text-sm text-amber-400 hover:text-amber-300 whitespace-nowrap ml-4">
+                        <h4 class="text-lg font-semibold text-white">${escapeHTML(
+                          title
+                        )}</h4>
+                        <a href="${escapeHTML(
+                          link
+                        )}" target="_blank" rel="noopener noreferrer" class="text-sm text-amber-400 hover:text-amber-300 whitespace-nowrap ml-4">
                             View Live &rarr;
                         </a>
                     </div>
-                    <p class="text-gray-400 text-sm mt-1 mb-3">${escapeHTML(description)}</p>
+                    <p class="text-gray-400 text-sm mt-1 mb-3">${escapeHTML(
+                      description
+                    )}</p>
                     <div class="flex flex-wrap gap-2">${techBadges}</div>
                 `;
-                projectsDisplay.appendChild(projectCard);
-            }
+          projectsDisplay.appendChild(projectCard);
+        }
 
-            // --- UTILITY FUNCTIONS ---
-            function validateAndShowError(inputElement) {
-                inputElement.classList.remove('input-error');
-                 if (!inputElement.value.trim()) {
-                    inputElement.classList.add('input-error');
-                    inputElement.focus();
-                    setTimeout(() => inputElement.classList.remove('input-error'), 600);
-                    return false;
-                 }
-                 return true;
-            }
+        // --- UTILITY FUNCTIONS ---
+        function validateAndShowError(inputElement) {
+          inputElement.classList.remove("input-error");
+          if (!inputElement.value.trim()) {
+            inputElement.classList.add("input-error");
+            inputElement.focus();
+            setTimeout(() => inputElement.classList.remove("input-error"), 600);
+            return false;
+          }
+          return true;
+        }
 
-            function escapeHTML(str) {
-                if (typeof str !== 'string') return '';
-                const p = document.createElement('p');
-                p.textContent = str;
-                return p.innerHTML;
-            }
+        function escapeHTML(str) {
+          if (typeof str !== "string") return "";
+          const p = document.createElement("p");
+          p.textContent = str;
+          return p.innerHTML;
+        }
 
-            // --- GENERIC COLLAPSIBLE/DROPDOWN LOGIC ---
-            const collapsibleToggles = document.querySelectorAll('.collapsible-toggle');
-            collapsibleToggles.forEach(toggle => {
-                toggle.addEventListener('click', () => {
-                    const item = toggle.closest('.collapsible-item');
-                    item.classList.toggle('is-open');
-                });
-            });
-            
-            // --- INITIAL PAGE LOAD ---
-            renderProjects();
+        // --- GENERIC COLLAPSIBLE/DROPDOWN LOGIC ---
+        const collapsibleToggles = document.querySelectorAll(
+          ".collapsible-toggle"
+        );
+        collapsibleToggles.forEach((toggle) => {
+          toggle.addEventListener("click", () => {
+            const item = toggle.closest(".collapsible-item");
+            item.classList.toggle("is-open");
+          });
         });
+
+        // --- INITIAL PAGE LOAD ---
+        renderProjects();
+      });
     </script>
-</body>
+  </body>
 </html>
-
-
